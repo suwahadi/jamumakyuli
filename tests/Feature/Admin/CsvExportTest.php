@@ -18,6 +18,16 @@ use Tests\TestCase;
 class CsvExportTest extends TestCase
 {
     use RefreshDatabase;
+
+    // Ekspor/impor produk dinonaktifkan lewat storefront.disabled_pages; test tetap
+    // menjalankannya supaya aman saat dimunculkan kembali.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.disabled_pages' => []]);
+    }
+
     use SeedsCatalog;
 
     private function admin(): User

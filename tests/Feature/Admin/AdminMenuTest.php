@@ -23,7 +23,7 @@ class AdminMenuTest extends TestCase
 
     public function test_tanpa_konfigurasi_seluruh_entri_tampil(): void
     {
-        config(['storefront.hidden.admin_menu' => []]);
+        config(['storefront.hidden.admin_menu' => [], 'storefront.disabled_pages' => []]);
 
         $rute = $this->rute(AdminMenu::items());
 
@@ -58,20 +58,20 @@ class AdminMenuTest extends TestCase
     // benar meski entrinya tidak ada di sidebar.
     public function test_judul_halaman_tersembunyi_tetap_terbaca(): void
     {
-        config(['storefront.hidden.admin_menu' => ['admin.transfer.products']]);
+        config(['storefront.hidden.admin_menu' => ['admin.transfer.products'], 'storefront.disabled_pages' => []]);
 
         $this->get(route('admin.transfer.products'));
 
         $this->assertSame('Export / Import Data', AdminMenu::currentLabel());
     }
 
-    // Permintaan pemilik 2026-10-26: ekspor/impor produk dibuka lagi di
-    // sidebar, ekspor/impor pengguna tetap tersembunyi.
-    public function test_konfigurasi_bawaan_menampilkan_ekspor_impor_produk_saja(): void
+    // Permintaan pemilik 2026-11-19: ekspor/impor produk dinonaktifkan sementara
+    // lewat storefront.disabled_pages, ekspor/impor pengguna tetap tersembunyi.
+    public function test_konfigurasi_bawaan_menyembunyikan_seluruh_ekspor_impor(): void
     {
         $rute = $this->rute(AdminMenu::items());
 
-        $this->assertContains('admin.transfer.products', $rute);
+        $this->assertNotContains('admin.transfer.products', $rute);
         $this->assertNotContains('admin.transfer.users', $rute);
     }
 }

@@ -43,6 +43,16 @@ class DisabledAdminPagesTest extends TestCase
         $this->assertNotContains('admin.reports.sales', $this->menuRoutes());
     }
 
+    public function test_product_export_import_is_disabled_by_default(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->get('/admin/transfer/products')->assertNotFound();
+        $this->actingAs($admin)->get('/admin/transfer/products/export')->assertNotFound();
+
+        $this->assertNotContains('admin.transfer.products', $this->menuRoutes());
+    }
+
     public function test_dashboard_does_not_link_to_disabled_stock_opname(): void
     {
         $this->actingAs($this->admin())->get(route('admin.dashboard'))

@@ -21,6 +21,15 @@ class CsvImportTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Ekspor/impor produk dinonaktifkan lewat storefront.disabled_pages; test tetap
+    // menjalankannya supaya aman saat dimunculkan kembali.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.disabled_pages' => []]);
+    }
+
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);

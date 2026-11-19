@@ -16,6 +16,8 @@ return [
     'disabled_pages' => [
         'admin.reports.sales',
         'admin.stock-opname.index',
+        'admin.transfer.products',
+        'admin.transfer.products.export',
     ],
 
 ];
