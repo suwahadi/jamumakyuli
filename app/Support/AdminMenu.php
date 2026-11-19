@@ -6,6 +6,12 @@ namespace App\Support;
 
 class AdminMenu
 {
+    private const DERIVED_PAGE_LABELS = [
+        'admin.products.create' => 'Produk Baru',
+        'admin.products.edit' => 'Ubah Produk',
+        'admin.orders.show' => 'Detail Pesanan',
+    ];
+
     public static function isDisabled(string $routeName): bool
     {
         return in_array($routeName, (array) config('storefront.disabled_pages', []), true);
@@ -89,6 +95,12 @@ class AdminMenu
                 if (isset($item['route']) && request()->routeIs($item['route'])) {
                     return $item['label'];
                 }
+            }
+        }
+
+        foreach (self::DERIVED_PAGE_LABELS as $route => $label) {
+            if (request()->routeIs($route)) {
+                return $label;
             }
         }
 

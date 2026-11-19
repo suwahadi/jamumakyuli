@@ -199,9 +199,9 @@ new #[Title('Notifikasi')] #[Layout('layouts::admin')] class extends Component {
                 <flux:heading size="lg">Hapus Notifikasi</flux:heading>
                 <flux:subheading>Yakin untuk menghapus data ini? Tindakan ini tidak dapat dibatalkan.</flux:subheading>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="delete" variant="danger">Ya, hapus</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="delete" variant="danger" class="w-full">Ya, hapus</flux:button>
             </div>
         </div>
     </flux:modal>

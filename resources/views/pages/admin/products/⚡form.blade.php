@@ -600,9 +600,9 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             </div>
         </section>
 
-        <div class="flex justify-end gap-2">
-            <flux:button :href="route('admin.products.index')" wire:navigate variant="ghost">Batal</flux:button>
-            <flux:button type="submit" variant="primary" :loading="false"><span wire:loading.remove wire:target="save">Simpan Produk</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
+        <div class="ml-auto grid w-full grid-cols-2 gap-2 sm:w-96">
+            <flux:button :href="route('admin.products.index')" wire:navigate variant="outline" class="w-full">Batal</flux:button>
+            <flux:button type="submit" variant="primary" :loading="false" class="w-full"><span wire:loading.remove wire:target="save">Simpan Produk</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
         </div>
     </form>
 </div>

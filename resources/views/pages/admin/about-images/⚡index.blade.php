@@ -171,11 +171,11 @@ new #[Title('Sekilas Tentang')] #[Layout('layouts::admin')] class extends Compon
                 <flux:text size="sm" class="mt-1 text-zinc-400">Disarankan berbentuk persegi. Otomatis dikompres ke WebP.</flux:text>
             </div>
 
-            <div class="flex justify-end gap-2">
+            <div class="grid grid-cols-2 gap-2">
                 <flux:modal.close>
-                    <flux:button variant="outline" class="cursor-pointer">Batal</flux:button>
+                    <flux:button variant="outline" class="w-full cursor-pointer">Batal</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
+                <flux:button type="submit" variant="primary" class="w-full cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </flux:modal>
@@ -185,11 +185,11 @@ new #[Title('Sekilas Tentang')] #[Layout('layouts::admin')] class extends Compon
             <flux:heading size="lg">Hapus gambar ini?</flux:heading>
             <flux:text>Gambar akan dihapus dari beranda dan berkasnya dibuang dari penyimpanan.</flux:text>
 
-            <div class="flex justify-end gap-2">
+            <div class="grid grid-cols-2 gap-2">
                 <flux:modal.close>
-                    <flux:button variant="outline" class="cursor-pointer">Batal</flux:button>
+                    <flux:button variant="outline" class="w-full cursor-pointer">Batal</flux:button>
                 </flux:modal.close>
-                <flux:button wire:click="delete" variant="danger" class="cursor-pointer">Hapus</flux:button>
+                <flux:button wire:click="delete" variant="danger" class="w-full cursor-pointer">Hapus</flux:button>
             </div>
         </div>
     </flux:modal>

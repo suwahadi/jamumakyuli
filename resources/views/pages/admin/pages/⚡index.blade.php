@@ -205,9 +205,9 @@ new #[Title('Halaman')] #[Layout('layouts::admin')] class extends Component {
             </div>
             <x-wysiwyg model="content" label="Konten" placeholder="Tulis konten halaman. Gunakan toolbar untuk heading, daftar, tautan, gambar…" />
             <flux:checkbox wire:model="is_active" label="Aktif (tampil di footer toko)" />
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline" class="cursor-pointer">Batal</flux:button></flux:modal.close>
-                <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Batal</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary" class="w-full cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </flux:modal>
@@ -218,9 +218,9 @@ new #[Title('Halaman')] #[Layout('layouts::admin')] class extends Component {
                 <flux:heading size="lg">Hapus Halaman</flux:heading>
                 <flux:subheading>Yakin untuk menghapus data ini? Tindakan ini tidak dapat dibatalkan.</flux:subheading>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="delete" variant="danger">Ya, hapus</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="delete" variant="danger" class="w-full">Ya, hapus</flux:button>
             </div>
         </div>
     </flux:modal>

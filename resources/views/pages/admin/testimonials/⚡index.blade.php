@@ -143,11 +143,11 @@ new #[Title('Testimoni')] #[Layout('layouts::admin')] class extends Component
                 <flux:textarea wire:model="content" label="Kutipan" placeholder="Partnya sesuai dan sampai cepat." class="sm:col-span-2" rows="3" />
             </div>
 
-            <div class="flex justify-end gap-2">
+            <div @class(['grid gap-2', 'grid-cols-2' => $editingId])>
                 @if ($editingId)
-                    <flux:button type="button" wire:click="resetForm" variant="ghost" class="cursor-pointer">Batal</flux:button>
+                    <flux:button type="button" wire:click="resetForm" variant="outline" class="w-full cursor-pointer">Batal</flux:button>
                 @endif
-                <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
+                <flux:button type="submit" variant="primary" class="w-full cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </div>
@@ -197,9 +197,9 @@ new #[Title('Testimoni')] #[Layout('layouts::admin')] class extends Component
                 <flux:heading size="lg">Hapus Testimoni</flux:heading>
                 <flux:subheading>Yakin untuk menghapus data ini? Tindakan ini tidak dapat dibatalkan.</flux:subheading>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="delete" variant="danger">Ya, hapus</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="delete" variant="danger" class="w-full">Ya, hapus</flux:button>
             </div>
         </div>
     </flux:modal>

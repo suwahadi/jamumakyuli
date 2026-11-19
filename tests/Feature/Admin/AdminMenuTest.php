@@ -2,11 +2,17 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use App\Support\AdminMenu;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AdminMenuTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @return list<string> */
     private function rute(array $menu): array
     {
@@ -63,6 +69,24 @@ class AdminMenuTest extends TestCase
         $this->get(route('admin.transfer.products'));
 
         $this->assertSame('Export / Import Data', AdminMenu::currentLabel());
+    }
+
+    // Halaman turunan yang tidak punya entri sendiri di sidebar tidak boleh jatuh
+    // ke judul "Dashboard" di remah navigasi.
+    public function test_judul_halaman_turunan_tidak_jatuh_ke_dashboard(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $product = Product::factory()->create();
+        $order = Order::factory()->create();
+
+        $this->actingAs($admin)->get(route('admin.products.create'));
+        $this->assertSame('Produk Baru', AdminMenu::currentLabel());
+
+        $this->actingAs($admin)->get(route('admin.products.edit', $product));
+        $this->assertSame('Ubah Produk', AdminMenu::currentLabel());
+
+        $this->actingAs($admin)->get(route('admin.orders.show', $order));
+        $this->assertSame('Detail Pesanan', AdminMenu::currentLabel());
     }
 
     // Permintaan pemilik 2026-11-19: ekspor/impor produk dinonaktifkan sementara

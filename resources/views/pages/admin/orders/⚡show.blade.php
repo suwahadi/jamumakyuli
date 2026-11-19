@@ -345,9 +345,9 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                     <flux:text class="mt-1">Status pesanan akan menjadi <span class="font-semibold">Diproses</span> dan notifikasi pembayaran dikirim ke pelanggan.</flux:text>
                 </div>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline" class="cursor-pointer">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="markPaid" variant="primary" class="cursor-pointer">Ya, Tandai Lunas</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="markPaid" variant="primary" class="w-full cursor-pointer">Ya, Tandai Lunas</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -372,9 +372,9 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                             label="Foto bukti kirim (opsional)" />
                 <p wire:loading wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Mengunggah foto…</p>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline" class="cursor-pointer">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="markShipped" wire:loading.attr="disabled" wire:target="bukti_kirim,markShipped" variant="primary" class="cursor-pointer">Ya, Tandai Dikirim</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="markShipped" wire:loading.attr="disabled" wire:target="bukti_kirim,markShipped" variant="primary" class="w-full cursor-pointer">Ya, Tandai Dikirim</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -391,9 +391,9 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                         <flux:text class="mt-1">Status pesanan menjadi <strong>Pesanan Diterima</strong>. Tindakan ini tidak dapat diurungkan.</flux:text>
                     </div>
                 </div>
-                <div class="flex justify-end gap-2">
-                    <flux:modal.close><flux:button variant="outline" class="cursor-pointer">Tidak</flux:button></flux:modal.close>
-                    <flux:button wire:click="markDelivered" variant="primary" class="cursor-pointer">Ya, Tandai Diterima</flux:button>
+                <div class="grid grid-cols-2 gap-2">
+                    <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Tidak</flux:button></flux:modal.close>
+                    <flux:button wire:click="markDelivered" variant="primary" class="w-full cursor-pointer">Ya, Tandai Diterima</flux:button>
                 </div>
             </div>
         </flux:modal>
@@ -410,9 +410,9 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                     <flux:text class="mt-1">Stok produk akan dikembalikan. Tindakan ini tidak dapat diurungkan.</flux:text>
                 </div>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline" class="cursor-pointer">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="cancelOrder" variant="danger" class="cursor-pointer">Ya, Batalkan Pesanan</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="cancelOrder" variant="danger" class="w-full cursor-pointer">Ya, Batalkan Pesanan</flux:button>
             </div>
         </div>
     </flux:modal>

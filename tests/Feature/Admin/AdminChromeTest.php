@@ -146,4 +146,18 @@ class AdminChromeTest extends TestCase
             $this->assertStringNotContainsString($tag, $isi);
         }
     }
+
+    // AGENTS.md: dua tombol sebaris harus 50:50. Pola lama rata kanan tidak boleh kembali.
+    public function test_baris_dua_tombol_di_admin_selalu_50_50(): void
+    {
+        $pelanggar = [];
+
+        foreach (File::allFiles(resource_path('views/pages/admin')) as $berkas) {
+            if (str_contains($berkas->getContents(), 'class="flex justify-end gap-2"')) {
+                $pelanggar[] = $berkas->getRelativePathname();
+            }
+        }
+
+        $this->assertSame([], $pelanggar);
+    }
 }

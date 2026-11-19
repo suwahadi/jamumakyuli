@@ -267,9 +267,9 @@ new #[Title('Slide Hero')] #[Layout('layouts::admin')] class extends Component
                 <flux:checkbox wire:model="is_active" label="Aktif" class="mt-6" />
             </div>
 
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline">Batal</flux:button></flux:modal.close>
-                <flux:button type="submit" variant="primary" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full">Batal</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary" :loading="false" class="w-full"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </flux:modal>
@@ -280,9 +280,9 @@ new #[Title('Slide Hero')] #[Layout('layouts::admin')] class extends Component
                 <flux:heading size="lg">Hapus Slide</flux:heading>
                 <flux:subheading>Yakin untuk menghapus data ini? Tindakan ini tidak dapat dibatalkan.</flux:subheading>
             </div>
-            <div class="flex justify-end gap-2">
-                <flux:modal.close><flux:button variant="outline">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="delete" variant="danger">Ya, hapus</flux:button>
+            <div class="grid grid-cols-2 gap-2">
+                <flux:modal.close><flux:button variant="outline" class="w-full">Tidak</flux:button></flux:modal.close>
+                <flux:button wire:click="delete" variant="danger" class="w-full">Ya, hapus</flux:button>
             </div>
         </div>
     </flux:modal>
