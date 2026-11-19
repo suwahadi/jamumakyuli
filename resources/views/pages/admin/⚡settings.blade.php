@@ -20,7 +20,7 @@ new #[Title('Pengaturan')] #[Layout('layouts::admin')] class extends Component
         'site_address' => ['label' => 'Alamat'],
         'site_hours' => ['label' => 'Jam Operasional'],
         'site_maps_url' => ['label' => 'Link Google Maps'],
-        'origin_district_id' => ['label' => 'ID Kelurahan Asal Pengiriman (RajaOngkir)'],
+        'origin_district_id' => ['label' => 'ID Kelurahan Pengiriman (Jangan Diubah)'],
     ];
 
     public array $paymentFields = [

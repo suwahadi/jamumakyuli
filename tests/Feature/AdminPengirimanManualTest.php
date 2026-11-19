@@ -85,7 +85,7 @@ class AdminPengirimanManualTest extends TestCase
         $this->actingAs($this->admin())
             ->get(route('admin.settings'))
             ->assertOk()
-            ->assertSee('ID Kelurahan Asal Pengiriman')
+            ->assertSee('ID Kelurahan Pengiriman (Jangan Diubah)')
             ->assertDontSee('Panjang Paket Default');
     }
 
