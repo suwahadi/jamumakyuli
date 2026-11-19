@@ -16,6 +16,15 @@ class FormProdukBervarianTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Fitur varian disembunyikan lewat storefront.hidden.product_variants; test tetap
+    // menjalankannya supaya aman saat dimunculkan kembali.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.hidden.product_variants' => false]);
+    }
+
     private const COMPONENT = 'pages::admin.products.form';
 
     private function formBaru(): Testable

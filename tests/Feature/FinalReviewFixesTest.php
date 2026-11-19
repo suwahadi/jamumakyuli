@@ -276,6 +276,7 @@ class FinalReviewFixesTest extends TestCase
 
     public function test_product_form_keeps_variant_stock_sold_while_form_was_open(): void
     {
+        config(['storefront.hidden.product_variants' => false]);
         $admin = User::factory()->create(['role' => 'admin']);
         $product = Product::factory()->create();
         $variant = Variant::factory()->create(['product_id' => $product->id, 'stock' => 10]);

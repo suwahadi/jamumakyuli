@@ -11,6 +11,8 @@ return [
         ],
 
         'slide_button' => true,
+
+        'product_variants' => true,
     ],
 
     'disabled_pages' => [

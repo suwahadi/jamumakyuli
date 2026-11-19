@@ -71,7 +71,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             ]));
             $this->loadedStock = (int) $product->stock;
             $this->loadedVariantStock = $product->variants->pluck('stock', 'id')->map(fn ($stock): int => (int) $stock)->all();
-            $this->variants = $product->variants->map(fn (Variant $v): array => [
+            $this->variants = $this->variantsHidden() ? [] : $product->variants->map(fn (Variant $v): array => [
                 'id' => $v->id,
                 'name' => $v->name,
                 'sku' => $v->sku,
@@ -185,8 +185,17 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
         $this->variants = array_values($this->variants);
     }
 
+    public function variantsHidden(): bool
+    {
+        return (bool) config('storefront.hidden.product_variants');
+    }
+
     public function save(): void
     {
+        if ($this->variantsHidden()) {
+            $this->variants = [];
+        }
+
         $productId = $this->product?->id;
         $adaVarian = $this->variants !== [];
         $wajibTanpaVarian = $adaVarian ? 'nullable' : 'required';
@@ -254,7 +263,9 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             return;
         }
 
-        if (! $this->validateVariantBusinessRules()) {
+        $aturanValid = $this->variantsHidden() ? $this->validasiSkuProdukLain() : $this->validateVariantBusinessRules();
+
+        if (! $aturanValid) {
             $this->dispatch('form-invalid');
 
             return;
@@ -283,7 +294,10 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
         }
 
         $this->persistImages();
-        $this->syncVariants();
+
+        if (! $this->variantsHidden()) {
+            $this->syncVariants();
+        }
 
         Flux::toast(variant: 'success', text: 'Produk berhasil disimpan.');
 
@@ -465,7 +479,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
                 <div class="grid items-start gap-4 sm:grid-cols-2">
                     <flux:input wire:model="name" label="Nama Produk" label:badge="*" aria-required="true" class="sm:col-span-2" />
                     <flux:field>
-                        <flux:label :badge="$variants === [] ? '*' : null"><span>SKU Produk (induk)@if ($variants !== [])<span class="font-normal text-gray-500 dark:text-zinc-400"> - Boleh dikosongkan, diisi otomatis dari SKU varian pertama.</span>@endif</span></flux:label>
+                        <flux:label :badge="$variants === [] ? '*' : null"><span>{{ $this->variantsHidden() ? 'SKU Produk' : 'SKU Produk (induk)' }}@if ($variants !== [])<span class="font-normal text-gray-500 dark:text-zinc-400"> - Boleh dikosongkan, diisi otomatis dari SKU varian pertama.</span>@endif</span></flux:label>
                         <flux:input wire:model="sku" :aria-required="$variants === [] ? 'true' : 'false'" />
                         <flux:error name="sku" />
                     </flux:field>
@@ -475,7 +489,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
                         @endforeach
                     </flux:select>
                 </div>
-                <x-wysiwyg model="description" label="Deskripsi *" placeholder="Tulis deskripsi produk: spesifikasi, material, dimensi…" />
+                <x-wysiwyg model="description" label="Deskripsi *" placeholder="Tulis deskripsi produk: bahan, cara merebus, aturan minum…" />
                 <flux:checkbox wire:model="is_active" label="Aktif (tampil di toko)" />
             </div>
         </section>
@@ -483,7 +497,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
         <section class="rounded-xl border border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
             <div class="border-b border-gray-100 px-5 py-4 dark:border-zinc-800 sm:px-6">
                 <h2 class="font-display text-base font-semibold tracking-tight text-brand-dark dark:text-zinc-100">Harga dan Stok</h2>
-                <p class="mt-1 text-xs text-gray-500 dark:text-zinc-400">{{ $variants === [] ? 'Wajib diisi untuk produk tanpa varian.' : 'Boleh dikosongkan karena produk ini memakai harga, berat, dan stok dari varian di bawah.' }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-zinc-400">{{ $this->variantsHidden() ? 'Harga promo boleh dikosongkan.' : ($variants === [] ? 'Wajib diisi untuk produk tanpa varian.' : 'Boleh dikosongkan karena produk ini memakai harga, berat, dan stok dari varian di bawah.') }}</p>
             </div>
             <div class="grid gap-4 p-5 sm:grid-cols-2 sm:p-6 xl:grid-cols-4">
                 <flux:input wire:model="original_price" type="number" label="Harga Asli (Rp)" :label:badge="$variants === [] ? '*' : null" :aria-required="$variants === [] ? 'true' : 'false'" />
@@ -493,6 +507,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             </div>
         </section>
 
+        @unless ($this->variantsHidden())
         <section class="rounded-xl border border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
             <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-zinc-800 sm:px-6">
                 <div>
@@ -533,6 +548,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
                 <flux:error name="variants" :deep="false" />
             </div>
         </section>
+        @endunless
 
         <section class="rounded-xl border border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
             <div class="border-b border-gray-100 px-5 py-4 dark:border-zinc-800 sm:px-6">

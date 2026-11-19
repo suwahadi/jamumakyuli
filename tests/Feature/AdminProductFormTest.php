@@ -144,6 +144,7 @@ class AdminProductFormTest extends TestCase
 
     public function test_admin_menyimpan_produk_dengan_varian(): void
     {
+        config(['storefront.hidden.product_variants' => false]);
         $category = $this->category();
 
         Livewire::actingAs($this->admin())
@@ -174,6 +175,7 @@ class AdminProductFormTest extends TestCase
 
     public function test_varian_yang_pernah_diopname_tidak_bisa_dihapus_lewat_formulir(): void
     {
+        config(['storefront.hidden.product_variants' => false]);
         $admin = $this->admin();
         $product = Product::factory()->inStock()->create([
             'category_id' => $this->category()->id,
@@ -210,6 +212,7 @@ class AdminProductFormTest extends TestCase
 
     public function test_penolakan_hapus_varian_tidak_ikut_menyimpan_perubahan_lain(): void
     {
+        config(['storefront.hidden.product_variants' => false]);
         $admin = $this->admin();
         $product = Product::factory()->inStock()->create([
             'category_id' => $this->category()->id,

@@ -17,6 +17,15 @@ class AturanSkuTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Fitur varian disembunyikan lewat storefront.hidden.product_variants; test tetap
+    // menjalankannya supaya aman saat dimunculkan kembali.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.hidden.product_variants' => false]);
+    }
+
     private const FORM = 'pages::admin.products.form';
 
     private function produk(array $atribut = []): Product
