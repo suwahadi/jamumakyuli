@@ -238,7 +238,7 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                                 </div>
                                 <div x-show="ubah" x-cloak x-on:keydown.escape.prevent="ubah = false; $wire.batalUbahResi()">
                                     <div class="flex min-h-11 items-center gap-1 rounded-md border border-zinc-500 bg-white pl-3 pr-1 focus-within:ring-2 focus-within:ring-zinc-900/15 dark:bg-zinc-900 dark:focus-within:ring-white/20">
-                                        <input id="resi-inline" x-ref="resi" type="text" wire:model="tracking_number" maxlength="100" aria-describedby="resi-bantuan"
+                                        <input id="resi-inline" x-ref="resi" type="text" wire:model="tracking_number" maxlength="100"
                                                wire:keydown.enter.prevent="saveTracking"
                                                class="min-w-0 flex-1 bg-transparent py-2 font-mono font-bold text-brand-dark outline-none dark:text-zinc-100" />
                                         <button type="button" aria-label="Simpan nomor resi" title="Simpan nomor resi" wire:click="saveTracking"
@@ -255,7 +255,6 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                                             </svg>
                                         </button>
                                     </div>
-                                    <p id="resi-bantuan" class="mt-1.5 text-xs text-gray-500 dark:text-zinc-400">Bila resi diganti, pembeli menerima email ulang berisi resi baru.</p>
                                     @error('tracking_number')
                                         <p class="mt-1 text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
@@ -289,11 +288,6 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                                         {{ $buktiUrl ? 'Ganti foto' : 'Unggah foto' }}
                                     </label>
                                     <p wire:loading wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Mengunggah foto…</p>
-                                    @if (! $order->user_id)
-                                        <p wire:loading.remove wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Pesanan tanpa akun: foto hanya terlihat oleh admin.</p>
-                                    @elseif (! $buktiUrl)
-                                        <p wire:loading.remove wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Opsional. Pembeli bisa melihatnya di halaman pesanan.</p>
-                                    @endif
                                     @error('bukti_kirim')
                                         <p class="mt-1 text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
@@ -375,8 +369,7 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                         maxlength="100" />
             <div>
                 <flux:input type="file" wire:model="bukti_kirim" accept="image/jpeg,image/png,image/webp"
-                            label="Foto bukti kirim (opsional)"
-                            description="Foto resi atau struk ekspedisi. JPG, PNG, atau WebP, maksimal 10 MB." />
+                            label="Foto bukti kirim (opsional)" />
                 <p wire:loading wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Mengunggah foto…</p>
             </div>
             <div class="flex justify-end gap-2">

@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -38,6 +39,12 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
 
     public int $stock = 0;
 
+    #[Locked]
+    public ?int $loadedStock = null;
+
+    #[Locked]
+    public array $loadedVariantStock = [];
+
     public bool $is_active = true;
 
     public array $variants = [];
@@ -62,6 +69,8 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             $this->fill($product->only([
                 'category_id', 'name', 'sku', 'original_price', 'promo_price', 'description', 'weight', 'stock', 'is_active',
             ]));
+            $this->loadedStock = (int) $product->stock;
+            $this->loadedVariantStock = $product->variants->pluck('stock', 'id')->map(fn ($stock): int => (int) $stock)->all();
             $this->variants = $product->variants->map(fn (Variant $v): array => [
                 'id' => $v->id,
                 'name' => $v->name,
@@ -263,6 +272,10 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             ? $this->product->slug
             : Product::uniqueSlug($this->name, $productId);
 
+        if ($this->product?->exists && (int) ($data['stock'] ?? 0) === $this->loadedStock) {
+            unset($data['stock']);
+        }
+
         if ($this->product?->exists) {
             $this->product->update($data);
         } else {
@@ -408,6 +421,10 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
                 'weight' => (int) $variant['weight'],
                 'image_id' => $imageKey !== null ? ($this->slotKeyToId[$imageKey] ?? null) : null,
             ];
+
+            if ($variant['id'] && (int) $variant['stock'] === ($this->loadedVariantStock[$variant['id']] ?? null)) {
+                unset($payload['stock']);
+            }
 
             if ($variant['id']) {
                 $this->product->variants()->whereKey($variant['id'])->update($payload);
@@ -569,7 +586,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
 
         <div class="flex justify-end gap-2">
             <flux:button :href="route('admin.products.index')" wire:navigate variant="ghost">Batal</flux:button>
-            <flux:button type="submit" variant="primary">Simpan Produk</flux:button>
+            <flux:button type="submit" variant="primary" :loading="false"><span wire:loading.remove wire:target="save">Simpan Produk</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
         </div>
     </form>
 </div>

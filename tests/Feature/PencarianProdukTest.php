@@ -156,7 +156,7 @@ class PencarianProdukTest extends TestCase
         $this->assertSame(['jamu', 'k12'], Product::kataKunci('"jamu" k12.'));
     }
 
-    // Kapasitas mesin seperti "1.5" harus tetap satu kata, bukan "1" dan "5".
+    // Takaran seperti "1.5" harus tetap satu kata, bukan "1" dan "5".
     public function test_angka_desimal_tetap_utuh(): void
     {
         $this->assertSame(['1.5'], Product::kataKunci('1.5'));

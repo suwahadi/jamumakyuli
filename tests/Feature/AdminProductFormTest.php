@@ -64,7 +64,7 @@ class AdminProductFormTest extends TestCase
         Livewire::actingAs($this->admin())
             ->test(self::COMPONENT)
             ->set('category_id', $category->id)
-            ->set('name', 'Filter Oli Uji')
+            ->set('name', 'Jamu Kunyit Uji')
             ->set('sku', 'JMY-UJI-001')
             ->set('original_price', 500000)
             ->set('promo_price', 450000)
@@ -77,8 +77,8 @@ class AdminProductFormTest extends TestCase
         $product = Product::query()->where('sku', 'JMY-UJI-001')->first();
 
         $this->assertNotNull($product);
-        $this->assertSame('Filter Oli Uji', $product->name);
-        $this->assertSame('filter-oli-uji', $product->slug);
+        $this->assertSame('Jamu Kunyit Uji', $product->name);
+        $this->assertSame('jamu-kunyit-uji', $product->slug);
         $this->assertSame(450000, $product->promo_price);
         $this->assertSame(7, $product->stock);
         $this->assertTrue($product->is_active);
@@ -125,8 +125,8 @@ class AdminProductFormTest extends TestCase
     {
         $product = Product::factory()->inStock()->create([
             'category_id' => $this->category()->id,
-            'name' => 'Filter Oli',
-            'slug' => 'filter-oli-premium-2',
+            'name' => 'Jamu Kunyit',
+            'slug' => 'jamu-kunyit-premium-2',
             'sku' => 'JMY-TETAP-001',
         ]);
 
@@ -139,7 +139,7 @@ class AdminProductFormTest extends TestCase
         $product->refresh();
 
         $this->assertSame(42, $product->stock);
-        $this->assertSame('filter-oli-premium-2', $product->slug, 'URL publik produk berubah padahal namanya tidak.');
+        $this->assertSame('jamu-kunyit-premium-2', $product->slug, 'URL publik produk berubah padahal namanya tidak.');
     }
 
     public function test_admin_menyimpan_produk_dengan_varian(): void
@@ -149,7 +149,7 @@ class AdminProductFormTest extends TestCase
         Livewire::actingAs($this->admin())
             ->test(self::COMPONENT)
             ->set('category_id', $category->id)
-            ->set('name', 'Kampas Rem Bervarian')
+            ->set('name', 'Jamu Kunyit Bervarian')
             ->set('sku', 'JMY-VAR-001')
             ->set('original_price', 700000)
             ->set('promo_price', null)

@@ -27,9 +27,9 @@ class OrderItemsRenderTest extends TestCase
             'grand_total' => 370000,
         ]);
 
-        $plain = Product::factory()->create(['name' => 'Part Uji Polos', 'is_active' => true]);
+        $plain = Product::factory()->create(['name' => 'Jamu Uji Polos', 'is_active' => true]);
 
-        $withVariant = Product::factory()->create(['name' => 'Part Uji Varian', 'is_active' => true]);
+        $withVariant = Product::factory()->create(['name' => 'Jamu Uji Varian', 'is_active' => true]);
         $variant = Variant::factory()->create([
             'product_id' => $withVariant->id,
             'name' => 'Standar',
@@ -61,8 +61,8 @@ class OrderItemsRenderTest extends TestCase
 
         $this->get(route('checkout.success', $order->uuid))
             ->assertOk()
-            ->assertSee('Part Uji Polos')
-            ->assertSee('Part Uji Varian')
+            ->assertSee('Jamu Uji Polos')
+            ->assertSee('Jamu Uji Varian')
             ->assertSee('Standar')
             ->assertSee('Ukir nama Budi')
             ->assertSee(rupiah(200000));
@@ -76,7 +76,7 @@ class OrderItemsRenderTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard.orders.show', $order->order_number))
             ->assertOk()
-            ->assertSee('Part Uji Polos')
+            ->assertSee('Jamu Uji Polos')
             ->assertSee('Standar')
             ->assertSee('Ukir nama Budi');
     }
@@ -88,7 +88,7 @@ class OrderItemsRenderTest extends TestCase
         $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.orders.show', $order->order_number))
             ->assertOk()
-            ->assertSee('Part Uji Polos')
+            ->assertSee('Jamu Uji Polos')
             ->assertSee('Standar')
             ->assertSee('Ukir nama Budi');
     }
@@ -106,7 +106,7 @@ class OrderItemsRenderTest extends TestCase
     public function test_halaman_keranjang_menampilkan_isi_keranjang(): void
     {
         $product = Product::factory()->inStock()->create([
-            'name' => 'Part Uji Keranjang',
+            'name' => 'Jamu Uji Keranjang',
             'original_price' => 100000,
             'promo_price' => null,
         ]);
@@ -114,7 +114,7 @@ class OrderItemsRenderTest extends TestCase
         app(CartService::class)->add($product->id, 2);
 
         Livewire::test('pages::storefront.cart')
-            ->assertSee('Part Uji Keranjang')
+            ->assertSee('Jamu Uji Keranjang')
             ->assertSee(rupiah(200000))
             ->assertDontSee('Termasuk');
     }

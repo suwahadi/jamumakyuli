@@ -54,7 +54,7 @@ class CsvExportTest extends TestCase
 
     public function test_ekspor_menulis_satu_baris_per_varian(): void
     {
-        $kategori = Category::factory()->create(['slug' => 'lampu']);
+        $kategori = Category::factory()->create(['slug' => 'akar']);
         $produk = Product::factory()->create(['category_id' => $kategori->id, 'sku' => 'JMY-INDUK', 'description' => 'Deskripsi', 'is_active' => true]);
         Variant::factory()->create(['product_id' => $produk->id, 'name' => 'KANAN', 'sku' => '999ABC-01', 'price' => 100000, 'promo_price' => 90000, 'stock' => 3, 'weight' => 500]);
         Variant::factory()->create(['product_id' => $produk->id, 'name' => 'KIRI', 'sku' => '999ABC-01', 'price' => 120000, 'promo_price' => null, 'stock' => 2, 'weight' => 600]);
@@ -63,8 +63,8 @@ class CsvExportTest extends TestCase
         $baris = $this->baris($this->unduh('admin.transfer.products.export'));
 
         $this->assertCount(4, $baris);
-        $this->assertSame(['JMY-INDUK', 'KANAN', '999ABC-01', $produk->name, 'lampu', '100000', '90000', '3', '500', '1', 'Deskripsi'], $baris[1]);
-        $this->assertSame(['JMY-INDUK', 'KIRI', '999ABC-01', $produk->name, 'lampu', '120000', '', '2', '600', '1', 'Deskripsi'], $baris[2]);
+        $this->assertSame(['JMY-INDUK', 'KANAN', '999ABC-01', $produk->name, 'akar', '100000', '90000', '3', '500', '1', 'Deskripsi'], $baris[1]);
+        $this->assertSame(['JMY-INDUK', 'KIRI', '999ABC-01', $produk->name, 'akar', '120000', '', '2', '600', '1', 'Deskripsi'], $baris[2]);
         $this->assertSame(['JMY-TUNGGAL', '', ''], array_slice($baris[3], 0, 3));
         $this->assertSame('50000', $baris[3][5]);
     }
@@ -120,12 +120,12 @@ class CsvExportTest extends TestCase
 
     public function test_teks_angka_dan_karakter_khusus_tidak_berubah(): void
     {
-        User::factory()->create(['name' => 'Budi & Rina <Bengkel>', 'email' => 'budi@contoh.id', 'phone' => '081234567890']);
+        User::factory()->create(['name' => 'Budi & Rina <Jamu>', 'email' => 'budi@contoh.id', 'phone' => '081234567890']);
 
         $baris = $this->baris($this->unduh('admin.transfer.users.export'));
         $budi = collect($baris)->firstWhere(1, 'budi@contoh.id');
 
-        $this->assertSame(['Budi & Rina <Bengkel>', 'budi@contoh.id', '081234567890'], $budi);
+        $this->assertSame(['Budi & Rina <Jamu>', 'budi@contoh.id', '081234567890'], $budi);
     }
 
     public function test_halaman_transfer_punya_centang_kolom_tercentang_semua(): void

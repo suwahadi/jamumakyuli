@@ -30,13 +30,13 @@ class AdminListPagesTest extends TestCase
 
     public function test_kategori_dapat_dicari(): void
     {
-        Category::query()->create(['name' => 'Rem dan Kampas', 'slug' => 'rem', 'is_active' => true]);
+        Category::query()->create(['name' => 'Rempah dan Akar', 'slug' => 'rempah', 'is_active' => true]);
         Category::query()->create(['name' => 'Kelistrikan', 'slug' => 'kelistrikan', 'is_active' => true]);
 
         Livewire::actingAs($this->admin())
             ->test('pages::admin.categories.index')
-            ->set('cari', 'Rem')
-            ->assertSee('Rem dan Kampas')
+            ->set('cari', 'Rempah')
+            ->assertSee('Rempah dan Akar')
             ->assertDontSee('Kelistrikan');
     }
 
@@ -51,7 +51,7 @@ class AdminListPagesTest extends TestCase
 
     public function test_mengubah_filter_mengembalikan_ke_halaman_satu(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
         Product::factory()->count(40)->create(['category_id' => $kategori->id, 'is_active' => true]);
 
         Livewire::actingAs($this->admin())
@@ -67,12 +67,12 @@ class AdminListPagesTest extends TestCase
         $kategoriA = Category::query()->create(['name' => 'Kategori A', 'slug' => 'kategori-a', 'is_active' => true]);
         $kategoriB = Category::query()->create(['name' => 'Kategori B', 'slug' => 'kategori-b', 'is_active' => true]);
 
-        $cocok = Product::factory()->create(['name' => 'Kampas Rem Sakura', 'category_id' => $kategoriA->id]);
-        $bedaKategori = Product::factory()->create(['name' => 'Kampas Rem Yamaha', 'category_id' => $kategoriB->id]);
+        $cocok = Product::factory()->create(['name' => 'Jamu Kunyit Asam', 'category_id' => $kategoriA->id]);
+        $bedaKategori = Product::factory()->create(['name' => 'Jamu Kunyit Sirih', 'category_id' => $kategoriB->id]);
 
         Livewire::actingAs($this->admin())
             ->test('pages::admin.products.index')
-            ->set('cari', 'Kampas Rem')
+            ->set('cari', 'Jamu Kunyit')
             ->set('filterKategori', $kategoriA->id)
             ->assertSee($cocok->name)
             ->assertDontSee($bedaKategori->name);
@@ -82,7 +82,7 @@ class AdminListPagesTest extends TestCase
     // yang sama dengan panel Stok Menipis di dasbor.
     public function test_kartu_stok_menipis_produk_sadar_varian_ambang_dan_status_aktif(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         Product::factory()->create(['category_id' => $kategori->id, 'stock' => 3, 'is_active' => true]);
         Product::factory()->create(['category_id' => $kategori->id, 'stock' => 8, 'is_active' => true]);
@@ -99,7 +99,7 @@ class AdminListPagesTest extends TestCase
 
     public function test_nilai_persediaan_ikut_menghitung_stok_varian(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         Product::factory()->create([
             'category_id' => $kategori->id,
@@ -126,7 +126,7 @@ class AdminListPagesTest extends TestCase
     // dan halaman produk admin menjadi 500. Stok negatif dihitung nol.
     public function test_stok_negatif_tidak_membuat_halaman_produk_galat(): void
     {
-        $kategori = Category::query()->create(['name' => 'Lampu', 'slug' => 'lampu', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Akar', 'slug' => 'akar', 'is_active' => true]);
 
         Product::factory()->create(['category_id' => $kategori->id, 'stock' => -2, 'original_price' => 100_000, 'promo_price' => null]);
         $bervarian = Product::factory()->create(['category_id' => $kategori->id, 'stock' => 0, 'original_price' => 9_240_000, 'promo_price' => null]);

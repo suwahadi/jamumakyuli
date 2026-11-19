@@ -335,8 +335,7 @@ new #[Layout('layouts::storefront')] class extends Component
                     <div class="mt-5 border-t border-line pt-5 dark:border-zinc-800">
                         <flux:input wire:model.live.debounce.300ms="customText" maxlength="60"
                                     label="{{ __('Catatan Custom') }}"
-                                    placeholder="{{ __('cth: ukuran khusus 1400 x 700 mm') }}"
-                                    description="{{ __('Tulis permintaan custom Anda dengan jelas. Wajib diisi sebelum menambahkan ke keranjang.') }}" />
+                                    placeholder="{{ __('Tulis permintaan Anda') }}" />
                     </div>
                 @endif
 

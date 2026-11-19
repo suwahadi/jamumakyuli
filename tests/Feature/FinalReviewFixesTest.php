@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\PaymentAttempt;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Variant;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\Payments\Midtrans\MidtransPaymentAttemptService;
@@ -245,5 +246,106 @@ class FinalReviewFixesTest extends TestCase
             ->assertSee('rounded-full bg-rose-500', false);
 
         $this->assertStringContainsString('.lbl .req { color: var(--color-sale); }', file_get_contents(resource_path('css/app.css')));
+    }
+
+    public function test_product_form_keeps_stock_sold_while_form_was_open(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $product = Product::factory()->create(['stock' => 20]);
+
+        $form = Livewire::actingAs($admin)->test('pages::admin.products.form', ['product' => $product]);
+        $product->update(['stock' => 18]);
+        $form->set('name', 'Jamu Kunyit Asam Baru')->call('save')->assertHasNoErrors();
+
+        $this->assertSame(18, $product->fresh()->stock);
+        $this->assertSame('Jamu Kunyit Asam Baru', $product->fresh()->name);
+    }
+
+    public function test_product_form_saves_stock_the_admin_changed(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $product = Product::factory()->create(['stock' => 20]);
+
+        Livewire::actingAs($admin)->test('pages::admin.products.form', ['product' => $product])
+            ->set('stock', 30)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame(30, $product->fresh()->stock);
+    }
+
+    public function test_product_form_keeps_variant_stock_sold_while_form_was_open(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $product = Product::factory()->create();
+        $variant = Variant::factory()->create(['product_id' => $product->id, 'stock' => 10]);
+
+        $form = Livewire::actingAs($admin)->test('pages::admin.products.form', ['product' => $product]);
+        $variant->update(['stock' => 7]);
+        $form->set('name', 'Jamu Bervarian Baru')->call('save')->assertHasNoErrors();
+
+        $this->assertSame(7, $variant->fresh()->stock);
+    }
+
+    public function test_reconcile_keeps_going_when_one_status_call_cannot_connect(): void
+    {
+        $first = Order::factory()->create(['status' => OrderStatus::PENDING]);
+        $second = Order::factory()->create(['status' => OrderStatus::PENDING]);
+        $broken = $this->openAttempt($first);
+        $healthy = $this->openAttempt($second);
+        PaymentAttempt::query()->whereKey([$broken->id, $healthy->id])->update(['activated_at' => now()->subHour()]);
+
+        Http::fake(function ($request) use ($broken, $healthy) {
+            if (str_contains($request->url(), $broken->midtrans_order_id)) {
+                throw new ConnectionException('timeout');
+            }
+
+            if (str_contains($request->url(), $healthy->midtrans_order_id.'/status')) {
+                return Http::response([
+                    'order_id' => $healthy->midtrans_order_id,
+                    'transaction_status' => 'settlement',
+                    'status_code' => '200',
+                    'gross_amount' => number_format((int) $healthy->order->grand_total, 2, '.', ''),
+                    'fraud_status' => 'accept',
+                ], 200);
+            }
+
+            return Http::response(['status_code' => '200'], 200);
+        });
+
+        $this->artisan('payments:midtrans:reconcile')->assertSuccessful();
+
+        $this->assertSame(OrderStatus::PAID, $second->fresh()->status);
+    }
+
+    public function test_snap_connection_failure_becomes_business_error(): void
+    {
+        Http::fake(fn () => throw new ConnectionException('timeout'));
+        $order = Order::factory()->create(['status' => OrderStatus::PENDING]);
+
+        $this->expectException(BusinessRuleException::class);
+
+        app(MidtransPaymentAttemptService::class)->createOrReuseActiveAttempt($order);
+    }
+
+    public function test_no_old_brand_red_left_in_hover_and_active_states(): void
+    {
+        $css = file_get_contents(resource_path('css/app.css'));
+
+        $this->assertStringNotContainsString('var(--color-red-50)', $css);
+        $this->assertStringNotContainsString('var(--color-red-200)', $css);
+        $this->assertStringContainsString('.dark .bnav.is-active { color: var(--color-green-400); }', $css);
+        $this->assertStringContainsString('.dark .cat-card:hover', $css);
+    }
+
+    public function test_form_errors_and_submit_buttons_follow_house_rules(): void
+    {
+        $this->assertStringContainsString('[data-flux-error] { color: var(--color-sale); }', file_get_contents(resource_path('css/app.css')));
+
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($admin)->get(route('admin.settings'))
+            ->assertOk()
+            ->assertSee('Memproses...');
     }
 }

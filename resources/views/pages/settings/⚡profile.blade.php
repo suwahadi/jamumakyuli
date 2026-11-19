@@ -100,8 +100,8 @@ new #[Title('Pengaturan Profil')] class extends Component {
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-profile-button">
-                        Simpan
+                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-profile-button" :loading="false">
+                        <span wire:loading.remove wire:target="updateProfileInformation">Simpan</span><span wire:loading wire:target="updateProfileInformation">Memproses...</span>
                     </flux:button>
                 </div>
 

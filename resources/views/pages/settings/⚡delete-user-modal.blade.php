@@ -39,8 +39,8 @@ new class extends Component {
                 <flux:button variant="outline">Batal</flux:button>
             </flux:modal.close>
 
-            <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button">
-                Hapus akun
+            <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button" :loading="false">
+                <span wire:loading.remove wire:target="deleteUser">Hapus akun</span><span wire:loading wire:target="deleteUser">Memproses...</span>
             </flux:button>
         </div>
     </form>

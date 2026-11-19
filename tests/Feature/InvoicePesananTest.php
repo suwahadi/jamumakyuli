@@ -38,7 +38,7 @@ class InvoicePesananTest extends TestCase
         $order = app(OrderService::class)->checkout([
             'customer' => ['name' => 'Budi', 'email' => 'budi@email.com', 'phone' => '081234567890'],
             'shipping' => [
-                'destination_id' => 17473, 'address' => 'Jl. Mesin 1',
+                'destination_id' => 17473, 'address' => 'Jl. Melati 1',
                 'courier' => 'jne', 'service' => 'REG', 'cost' => 20000,
             ],
             'items' => [['product_id' => $product->id, 'quantity' => 2]],
@@ -71,7 +71,7 @@ class InvoicePesananTest extends TestCase
             ->assertSee($order->order_number)
             ->assertSee('Ditagihkan kepada')
             ->assertSee('Budi')
-            ->assertSee('Jl. Mesin 1')
+            ->assertSee('Jl. Melati 1')
             ->assertSee('JP1234567890')
             ->assertSee('Filter Bensin Uji Invoice')
             ->assertSee(rupiah(100000))

@@ -253,7 +253,7 @@ new #[Layout('layouts::storefront')] class extends Component
         <div class="mb-7 flex items-end justify-between gap-4">
             <div>
                 <h2 id="testimoni-h" class="sec-tick font-display text-[16px] font-semibold tracking-tight text-brand-dark dark:text-zinc-100 md:text-[19px]">{{ __('Testimoni Pelanggan') }}</h2>
-                <p class="mt-2 text-sm text-gray-500 dark:text-zinc-400">{{ __('Dipercaya bengkel, reseller, dan pemilik kendaraan di seluruh Indonesia.') }}</p>
+                <p class="mt-2 text-sm text-gray-500 dark:text-zinc-400">{{ __('Cerita dari pelanggan Jamu Mak Yuli.') }}</p>
             </div>
             <div class="hidden shrink-0 items-center gap-2 sm:flex">
                 <button type="button" @click="prev(); start()" aria-label="{{ __('Sebelumnya') }}" class="grid h-11 w-11 place-items-center rounded-md border-2 border-brand-dark text-brand-dark transition-colors hover:bg-brand-dark hover:text-white dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700">

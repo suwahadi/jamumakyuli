@@ -196,7 +196,6 @@ new #[Title('Stok Opname')] #[Layout('layouts::admin')] class extends Component 
             @if ($this->produkTerpilih?->hasVariants())
                 <div class="sm:col-span-2">
                     <label class="lbl">Hasil Hitung per Varian <span class="req">*</span></label>
-                    <p class="mb-2 text-xs text-gray-500 dark:text-zinc-400">Kosongkan varian yang belum dihitung. Stoknya tidak akan disentuh.</p>
 
                     <div class="overflow-x-auto rounded-md border border-gray-200 dark:border-zinc-800">
                         <table class="w-full min-w-[520px] text-sm">
@@ -215,7 +214,7 @@ new #[Title('Stok Opname')] #[Layout('layouts::admin')] class extends Component 
                                         <td class="px-4 py-2.5 font-mono text-xs text-gray-500 dark:text-zinc-400">{{ $varian->sku }}</td>
                                         <td class="px-4 py-2.5 text-right font-display font-bold text-gray-500 dark:text-zinc-400">{{ $varian->stock }}</td>
                                         <td class="px-4 py-2">
-                                            <input type="number" min="0" step="1" wire:model="fisik.{{ $varian->id }}" aria-label="Stok fisik {{ $varian->name }}" class="field">
+                                            <input type="number" min="0" step="1" wire:model="fisik.{{ $varian->id }}" aria-label="Stok fisik {{ $varian->name }}" placeholder="Belum dihitung" class="field">
                                             <flux:error name="fisik.{{ $varian->id }}" />
                                         </td>
                                     </tr>

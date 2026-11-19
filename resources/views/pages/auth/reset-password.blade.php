@@ -4,7 +4,7 @@
 
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" novalidate action="{{ route('password.update') }}" class="flex flex-col gap-6">
+        <form method="POST" novalidate action="{{ route('password.update') }}" class="flex flex-col gap-6" x-data="{ submitting: false }" @submit="submitting = true">
             @csrf
             <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
@@ -40,8 +40,9 @@
             />
 
             <div class="flex items-center justify-end">
-                <x-btn type="submit" variant="primary" class="w-full" data-test="reset-password-button">
-                    {{ __('Atur ulang kata sandi') }}
+                <x-btn type="submit" variant="primary" class="w-full" data-test="reset-password-button" x-bind:disabled="submitting">
+                    <span x-show="!submitting">{{ __('Atur ulang kata sandi') }}</span>
+                    <span x-show="submitting" x-cloak>{{ __('Memproses...') }}</span>
                 </x-btn>
             </div>
         </form>

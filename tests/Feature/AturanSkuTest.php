@@ -36,43 +36,43 @@ class AturanSkuTest extends TestCase
 
     public function test_pemakai_lain_menemukan_sku_di_produk_dan_varian(): void
     {
-        $induk = $this->produk(['sku' => '34300-T0A-003']);
+        $induk = $this->produk(['sku' => 'JMY-SRH-300']);
         $bervarian = $this->produk();
-        Variant::factory()->create(['product_id' => $bervarian->id, 'sku' => '34350-T0A-003']);
+        Variant::factory()->create(['product_id' => $bervarian->id, 'sku' => 'JMY-SRH-350']);
 
-        $this->assertTrue($induk->is(AturanSku::pemakaiLain('34300-T0A-003', null)));
-        $this->assertTrue($bervarian->is(AturanSku::pemakaiLain(' 34350-T0A-003 ', null)));
-        $this->assertNull(AturanSku::pemakaiLain('34300-T0A-003', $induk->id));
+        $this->assertTrue($induk->is(AturanSku::pemakaiLain('JMY-SRH-300', null)));
+        $this->assertTrue($bervarian->is(AturanSku::pemakaiLain(' JMY-SRH-350 ', null)));
+        $this->assertNull(AturanSku::pemakaiLain('JMY-SRH-300', $induk->id));
         $this->assertNull(AturanSku::pemakaiLain('TIDAK-ADA', null));
     }
 
     public function test_form_menolak_sku_produk_yang_dipakai_varian_produk_lain(): void
     {
-        $lain = $this->produk(['name' => 'Sein Spion Brio']);
-        Variant::factory()->create(['product_id' => $lain->id, 'sku' => '34300-T0A-003']);
+        $lain = $this->produk(['name' => 'Jamu Sirih Merah']);
+        Variant::factory()->create(['product_id' => $lain->id, 'sku' => 'JMY-SRH-300']);
         $product = $this->produk(['sku' => 'JMY-LAMA']);
 
         Livewire::actingAs($this->admin())
             ->test(self::FORM, ['product' => $product])
-            ->set('sku', '34300-T0A-003')
+            ->set('sku', 'JMY-SRH-300')
             ->call('save')
             ->assertHasErrors('sku')
-            ->assertSee('Sein Spion Brio');
+            ->assertSee('Jamu Sirih Merah');
 
         $this->assertSame('JMY-LAMA', $product->fresh()->sku);
     }
 
     public function test_form_menolak_sku_varian_yang_dipakai_produk_lain_dan_menyebut_namanya(): void
     {
-        $this->produk(['sku' => '34300-T0A-003', 'name' => 'Sein Spion Jazz']);
+        $this->produk(['sku' => 'JMY-SRH-300', 'name' => 'Jamu Sirih Hijau']);
         $product = $this->produk();
 
         Livewire::actingAs($this->admin())
             ->test(self::FORM, ['product' => $product])
-            ->set('variants', [$this->varian('34300-T0A-003', 'KANAN')])
+            ->set('variants', [$this->varian('JMY-SRH-300', 'KANAN')])
             ->call('save')
             ->assertHasErrors('variants.0.sku')
-            ->assertSee('Sein Spion Jazz');
+            ->assertSee('Jamu Sirih Hijau');
 
         $this->assertSame(0, $product->variants()->count());
     }
@@ -108,9 +108,9 @@ class AturanSkuTest extends TestCase
     public function test_sku_lama_yang_masih_dipakai_bersama_tetap_bisa_disimpan_bila_tidak_diubah(): void
     {
         $lain = $this->produk();
-        Variant::factory()->create(['product_id' => $lain->id, 'sku' => '34300-T0A-003', 'name' => 'KANAN']);
+        Variant::factory()->create(['product_id' => $lain->id, 'sku' => 'JMY-SRH-300', 'name' => 'KANAN']);
         $product = $this->produk();
-        Variant::factory()->create(['product_id' => $product->id, 'sku' => '34300-T0A-003', 'name' => 'KANAN']);
+        Variant::factory()->create(['product_id' => $product->id, 'sku' => 'JMY-SRH-300', 'name' => 'KANAN']);
 
         Livewire::actingAs($this->admin())
             ->test(self::FORM, ['product' => $product])

@@ -45,7 +45,7 @@ class OrderActivityTest extends TestCase
             'shipping' => [
                 'destination_id' => 17473,
                 'destination_label' => 'JATINEGARA, CAKUNG, JAKARTA TIMUR',
-                'address' => 'Jl. Mesin 1',
+                'address' => 'Jl. Melati 1',
                 'courier' => 'jne',
                 'cost' => 20000,
             ],

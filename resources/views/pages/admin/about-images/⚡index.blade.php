@@ -175,7 +175,7 @@ new #[Title('Sekilas Tentang')] #[Layout('layouts::admin')] class extends Compon
                 <flux:modal.close>
                     <flux:button variant="outline" class="cursor-pointer">Batal</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" class="cursor-pointer">Simpan</flux:button>
+                <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </flux:modal>

@@ -102,7 +102,7 @@ class StorefrontPagesTest extends TestCase
 
         Testimonial::query()->create([
             'name' => 'Budi Santoso',
-            'role' => 'Pemilik Bengkel',
+            'role' => 'Pelanggan Setia',
             'rating' => 5,
             'content' => 'Partnya sesuai dan sampai cepat.',
         ]);
@@ -111,7 +111,7 @@ class StorefrontPagesTest extends TestCase
 
         $response->assertSee('Partnya sesuai dan sampai cepat.');
         $response->assertSee('Budi Santoso');
-        $response->assertSee('Pemilik Bengkel');
+        $response->assertSee('Pelanggan Setia');
 
         $this->assertMatchesRegularExpression(
             '/<span class="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-brand-dark[^"]*">BS<\/span>/',
@@ -176,7 +176,7 @@ class StorefrontPagesTest extends TestCase
 
     public function test_katalog_memuat_dua_belas_produk_lalu_menambah_lewat_load_more(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         Product::factory()->count(20)->inStock()->create(['category_id' => $kategori->id]);
 
@@ -191,7 +191,7 @@ class StorefrontPagesTest extends TestCase
 
     public function test_katalog_menyembunyikan_load_more_saat_semua_produk_tampil(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         Product::factory()->count(3)->inStock()->create(['category_id' => $kategori->id]);
 
@@ -202,7 +202,7 @@ class StorefrontPagesTest extends TestCase
 
     public function test_katalog_menampilkan_load_more_saat_masih_ada_produk_tersisa(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         Product::factory()->count(20)->inStock()->create(['category_id' => $kategori->id]);
 
@@ -213,7 +213,7 @@ class StorefrontPagesTest extends TestCase
 
     public function test_tombol_lebih_banyak_tanpa_panah_dan_bergaris_tipis(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
         Product::factory()->count(20)->inStock()->create(['category_id' => $kategori->id]);
 
         $html = $this->get(route('products.index'))->assertOk()->getContent();

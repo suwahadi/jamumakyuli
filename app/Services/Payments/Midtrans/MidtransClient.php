@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Payments\Midtrans;
 
 use App\Exceptions\BusinessRuleException;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -35,11 +37,13 @@ class MidtransClient
             throw new BusinessRuleException('Konfigurasi pembayaran belum lengkap. Hubungi admin.');
         }
 
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => $this->authHeader(),
-        ])->post($this->snapUrl(), $payload);
+        try {
+            $response = $this->request()->post($this->snapUrl(), $payload);
+        } catch (ConnectionException $e) {
+            Log::error('Midtrans Snap tidak bisa dihubungi', ['message' => $e->getMessage()]);
+
+            throw new BusinessRuleException('Gagal memulai pembayaran. Silakan coba lagi.');
+        }
 
         if ($response->failed()) {
             Log::error('Midtrans Snap gagal membuat transaksi', [
@@ -55,11 +59,7 @@ class MidtransClient
 
     public function cancel(string $midtransOrderId): array
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => $this->authHeader(),
-        ])->post($this->apiBaseUrl().'/v2/'.urlencode($midtransOrderId).'/cancel');
+        $response = $this->request()->post($this->apiBaseUrl().'/v2/'.urlencode($midtransOrderId).'/cancel');
 
         return $response->json() ?? [
             'http_status' => $response->status(),
@@ -69,15 +69,24 @@ class MidtransClient
 
     public function status(string $midtransOrderId): array
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => $this->authHeader(),
-        ])->get($this->apiBaseUrl().'/v2/'.urlencode($midtransOrderId).'/status');
+        try {
+            $response = $this->request()->get($this->apiBaseUrl().'/v2/'.urlencode($midtransOrderId).'/status');
+        } catch (ConnectionException $e) {
+            return ['http_status' => 0, 'body' => $e->getMessage()];
+        }
 
         return $response->json() ?? [
             'http_status' => $response->status(),
             'body' => $response->body(),
         ];
+    }
+
+    private function request(): PendingRequest
+    {
+        return Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => $this->authHeader(),
+        ])->timeout(15);
     }
 }

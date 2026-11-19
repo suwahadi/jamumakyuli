@@ -23,15 +23,15 @@ class FormProdukBervarianTest extends TestCase
         return Livewire::actingAs(User::factory()->create(['role' => 'admin']))
             ->test(self::COMPONENT)
             ->set('category_id', Category::factory()->create()->id)
-            ->set('name', 'Lampu Spion Uji')
+            ->set('name', 'Jamu Beras Kencur Uji')
             ->set('description', 'Kiri dan kanan.');
     }
 
     private function varian(): array
     {
         return [
-            ['id' => null, 'name' => 'Kiri', 'sku' => '33550-T5L-K', 'price' => 450000, 'promo_price' => null, 'stock' => 3, 'weight' => 400, 'image_key' => null],
-            ['id' => null, 'name' => 'Kanan', 'sku' => '33550-T5L-N', 'price' => 420000, 'promo_price' => null, 'stock' => 2, 'weight' => 450, 'image_key' => null],
+            ['id' => null, 'name' => 'Kiri', 'sku' => 'JMY-KCR-K', 'price' => 450000, 'promo_price' => null, 'stock' => 3, 'weight' => 400, 'image_key' => null],
+            ['id' => null, 'name' => 'Kanan', 'sku' => 'JMY-KCR-N', 'price' => 420000, 'promo_price' => null, 'stock' => 2, 'weight' => 450, 'image_key' => null],
         ];
     }
 
@@ -46,9 +46,9 @@ class FormProdukBervarianTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        $produk = Product::query()->where('name', 'Lampu Spion Uji')->firstOrFail();
+        $produk = Product::query()->where('name', 'Jamu Beras Kencur Uji')->firstOrFail();
 
-        $this->assertSame('33550-T5L-K', $produk->sku);
+        $this->assertSame('JMY-KCR-K', $produk->sku);
         $this->assertSame(420000, $produk->original_price);
         $this->assertSame(400, $produk->weight);
         $this->assertSame(0, $produk->stock);
@@ -58,12 +58,12 @@ class FormProdukBervarianTest extends TestCase
     public function test_sku_induk_yang_diisi_tetap_dipakai_pada_produk_bervarian(): void
     {
         $this->formBaru()
-            ->set('sku', 'SPION-INDUK')
+            ->set('sku', 'KENCUR-INDUK')
             ->set('variants', $this->varian())
             ->call('save')
             ->assertHasNoErrors();
 
-        $this->assertTrue(Product::query()->where('sku', 'SPION-INDUK')->exists());
+        $this->assertTrue(Product::query()->where('sku', 'KENCUR-INDUK')->exists());
     }
 
     public function test_harga_promo_induk_ditolak_bila_tidak_di_bawah_harga_varian_termurah(): void
@@ -77,7 +77,7 @@ class FormProdukBervarianTest extends TestCase
             ->call('save')
             ->assertHasErrors(['promo_price' => 'lt']);
 
-        $this->assertFalse(Product::query()->where('name', 'Lampu Spion Uji')->exists());
+        $this->assertFalse(Product::query()->where('name', 'Jamu Beras Kencur Uji')->exists());
     }
 
     public function test_harga_promo_induk_di_bawah_harga_varian_termurah_diterima(): void
@@ -91,7 +91,7 @@ class FormProdukBervarianTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        $produk = Product::query()->where('name', 'Lampu Spion Uji')->firstOrFail();
+        $produk = Product::query()->where('name', 'Jamu Beras Kencur Uji')->firstOrFail();
 
         $this->assertSame(420000, $produk->original_price);
         $this->assertSame(400000, $produk->promo_price);

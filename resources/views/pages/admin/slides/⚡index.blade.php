@@ -269,7 +269,7 @@ new #[Title('Slide Hero')] #[Layout('layouts::admin')] class extends Component
 
             <div class="flex justify-end gap-2">
                 <flux:modal.close><flux:button variant="outline">Batal</flux:button></flux:modal.close>
-                <flux:button type="submit" variant="primary">Simpan</flux:button>
+                <flux:button type="submit" variant="primary" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </flux:modal>

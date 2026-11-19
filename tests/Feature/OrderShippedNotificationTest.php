@@ -38,7 +38,7 @@ class OrderShippedNotificationTest extends TestCase
         $order = app(OrderService::class)->checkout([
             'customer' => ['name' => 'Budi', 'email' => 'budi@email.com', 'phone' => '0812'],
             'shipping' => [
-                'destination_id' => 17473, 'address' => 'Jl. Mesin 1',
+                'destination_id' => 17473, 'address' => 'Jl. Melati 1',
                 'courier' => 'jne', 'service' => 'REG', 'cost' => 20000,
             ],
             'items' => [['product_id' => $product->id, 'quantity' => 1]],

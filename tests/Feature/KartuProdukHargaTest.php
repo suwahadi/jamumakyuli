@@ -20,11 +20,11 @@ class KartuProdukHargaTest extends TestCase
     public function test_urutan_harga_coret_lalu_harga_merah_lalu_judul(): void
     {
         $p = Product::factory()->create([
-            'name' => 'Kampas Rem Uji', 'original_price' => 500000, 'promo_price' => 450000, 'is_active' => true,
+            'name' => 'Jamu Kunyit Uji', 'original_price' => 500000, 'promo_price' => 450000, 'is_active' => true,
         ]);
 
         $this->blade('<x-product-card :product="$p" />', ['p' => $p->load('variants', 'images')])
-            ->assertSeeInOrder([rupiah(500000), rupiah(450000), 'Kampas Rem Uji']);
+            ->assertSeeInOrder([rupiah(500000), rupiah(450000), 'Jamu Kunyit Uji']);
     }
 
     public function test_harga_coret_tidak_lagi_dipindah_ke_belakang_di_layar_lebar(): void

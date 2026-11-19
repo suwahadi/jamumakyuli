@@ -216,6 +216,9 @@ body.storefront textarea::placeholder {
     color: var(--color-red-400);
 }
 
+[data-flux-error] { color: var(--color-sale); }
+.dark [data-flux-error] { color: var(--color-red-400); }
+
 .storefront input[type='search']:focus-visible {
     outline: none;
 }
@@ -236,8 +239,12 @@ body.storefront textarea::placeholder {
 .cat-card { transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
 .cat-card:hover {
     transform: translateY(-3px);
-    border-color: var(--color-red-200);
-    background: var(--color-red-50);
+    border-color: var(--color-green-200);
+    background: var(--color-green-50);
+}
+.dark .cat-card:hover {
+    border-color: var(--color-zinc-700);
+    background: var(--color-zinc-800);
 }
 
 .chip {
@@ -268,7 +275,7 @@ body.storefront textarea::placeholder {
 }
 .bnav.is-active { color: var(--color-brand-green); }
 .dark .bnav { color: var(--color-zinc-400); }
-.dark .bnav.is-active { color: var(--color-red-400); }
+.dark .bnav.is-active { color: var(--color-green-400); }
 .bnav.is-active span:last-child { font-weight: 700; }
 
 .text-display {

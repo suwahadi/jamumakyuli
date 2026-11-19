@@ -206,7 +206,7 @@ class StockOpnameTest extends TestCase
         Livewire::actingAs($this->admin())
             ->test('pages::admin.stock-opname')
             ->set('productId', $produk->id)
-            ->set('cari', 'Kampas Rem')
+            ->set('cari', 'Jamu Kunyit')
             ->set('physicalStock', 15)
             ->set('fisik', [$varian[0]->id => 15])
             ->set('note', 'Selisih tiga, dus rusak.')

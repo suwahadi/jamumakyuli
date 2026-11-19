@@ -113,6 +113,6 @@ new #[Title('Pengaturan')] #[Layout('layouts::admin')] class extends Component
     </div>
 
     <div class="sticky bottom-0 -mx-4 flex items-center justify-end gap-3 border-t border-gray-200 bg-white/90 px-4 py-3.5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/90 sm:-mx-6 sm:px-6">
-        <flux:button type="submit" variant="primary" class="cursor-pointer">Simpan Perubahan</flux:button>
+        <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan Perubahan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
     </div>
 </form>

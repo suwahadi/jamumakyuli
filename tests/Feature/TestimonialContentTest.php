@@ -16,13 +16,13 @@ class TestimonialContentTest extends TestCase
     {
         $testimonial = Testimonial::query()->create([
             'name' => 'Budi Santoso',
-            'role' => 'Pemilik Bengkel',
+            'role' => 'Pelanggan Setia',
             'rating' => 5,
             'content' => 'Partnya sesuai dan sampai cepat.',
         ]);
 
         $this->assertSame('Budi Santoso', $testimonial->name);
-        $this->assertSame('Pemilik Bengkel', $testimonial->role);
+        $this->assertSame('Pelanggan Setia', $testimonial->role);
         $this->assertSame(5, $testimonial->rating);
         $this->assertSame('Partnya sesuai dan sampai cepat.', $testimonial->content);
         $this->assertNull($testimonial->image);
@@ -57,7 +57,7 @@ class TestimonialContentTest extends TestCase
         Livewire::actingAs($admin)
             ->test('pages::admin.testimonials.index')
             ->set('name', 'Budi Santoso')
-            ->set('role', 'Pemilik Bengkel')
+            ->set('role', 'Pelanggan Setia')
             ->set('rating', 5)
             ->set('content', 'Partnya sesuai dan sampai cepat.')
             ->call('save')
@@ -65,7 +65,7 @@ class TestimonialContentTest extends TestCase
 
         $this->assertDatabaseHas('testimonials', [
             'name' => 'Budi Santoso',
-            'role' => 'Pemilik Bengkel',
+            'role' => 'Pelanggan Setia',
             'rating' => 5,
         ]);
     }

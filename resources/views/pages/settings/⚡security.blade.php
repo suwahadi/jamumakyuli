@@ -150,8 +150,8 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
             />
 
             <div class="flex items-center gap-4">
-                <flux:button variant="primary" type="submit" data-test="update-password-button">
-                    Simpan
+                <flux:button variant="primary" type="submit" data-test="update-password-button" :loading="false">
+                    <span wire:loading.remove wire:target="updatePassword">Simpan</span><span wire:loading wire:target="updatePassword">Memproses...</span>
                 </flux:button>
             </div>
         </form>

@@ -31,16 +31,16 @@ class LabelPengirimanTest extends TestCase
     private function pesanan(OrderStatus $status = OrderStatus::PAID): Order
     {
         $polos = Product::factory()->create([
-            'name' => 'Kampas Rem Depan Jazz', 'sku' => '45022-T5A-J01', 'weight' => 800,
+            'name' => 'Jamu Kunyit Asam Segar', 'sku' => 'JMY-KNY-J01', 'weight' => 800,
             'is_active' => true, 'stock' => 10, 'original_price' => 350000, 'promo_price' => null,
         ]);
-        $bervarian = Product::factory()->create(['name' => 'Lampu Spion City', 'sku' => '33550-INDUK', 'is_active' => true, 'original_price' => 450000, 'promo_price' => null]);
-        $varian = Variant::factory()->create(['product_id' => $bervarian->id, 'name' => 'Kiri', 'sku' => '33550-T9A-K', 'price' => 450000, 'promo_price' => null, 'stock' => 5, 'weight' => 400]);
+        $bervarian = Product::factory()->create(['name' => 'Jamu Beras Kencur Botol', 'sku' => 'JMY-KCR-INDUK', 'is_active' => true, 'original_price' => 450000, 'promo_price' => null]);
+        $varian = Variant::factory()->create(['product_id' => $bervarian->id, 'name' => 'Kiri', 'sku' => 'JMY-KCR-K9', 'price' => 450000, 'promo_price' => null, 'stock' => 5, 'weight' => 400]);
 
         $order = app(OrderService::class)->checkout([
             'customer' => ['name' => 'Budi Santoso', 'email' => 'budi@email.com', 'phone' => '081234567890'],
             'shipping' => [
-                'destination_id' => 17473, 'destination_label' => 'Mojogedang, Karanganyar, Jawa Tengah', 'address' => 'Jl. Mesin No. 1',
+                'destination_id' => 17473, 'destination_label' => 'Mojogedang, Karanganyar, Jawa Tengah', 'address' => 'Jl. Melati No. 1',
                 'courier' => 'jne', 'service' => 'REG', 'cost' => 20000,
             ],
             'items' => [
@@ -73,11 +73,11 @@ class LabelPengirimanTest extends TestCase
             ->assertOk()
             ->assertSee('100mm 150mm', false)
             ->assertSeeInOrder(['Pengirim', 'Jamu Mak Yuli', '081212795576', 'Dk. Pilangbangu, Ds. Munggur'])
-            ->assertSeeInOrder(['Penerima', 'Budi Santoso', '081234567890', 'Jl. Mesin No. 1', 'Mojogedang, Karanganyar, Jawa Tengah'])
+            ->assertSeeInOrder(['Penerima', 'Budi Santoso', '081234567890', 'Jl. Melati No. 1', 'Mojogedang, Karanganyar, Jawa Tengah'])
             ->assertSee($order->order_number)
             ->assertSee($order->paid_at->locale('id')->isoFormat('D MMM YYYY'))
-            ->assertSeeInOrder(['Kampas Rem Depan Jazz', '45022-T5A-J01', '2'])
-            ->assertSeeInOrder(['Lampu Spion City', '33550-T9A-K', 'Kiri', '1'])
+            ->assertSeeInOrder(['Jamu Kunyit Asam Segar', 'JMY-KNY-J01', '2'])
+            ->assertSeeInOrder(['Jamu Beras Kencur Botol', 'JMY-KCR-K9', 'Kiri', '1'])
             ->assertSee('2 kg')
             ->assertDontSee('Rp');
     }
@@ -97,7 +97,7 @@ class LabelPengirimanTest extends TestCase
     {
         $items = $this->pesanan(OrderStatus::PENDING)->items()->orderBy('id')->get();
 
-        $this->assertSame(['45022-T5A-J01', '33550-T9A-K'], $items->pluck('sku')->all());
+        $this->assertSame(['JMY-KNY-J01', 'JMY-KCR-K9'], $items->pluck('sku')->all());
         $this->assertSame([null, 'Kiri'], $items->pluck('variant_name')->all());
     }
 
@@ -105,16 +105,16 @@ class LabelPengirimanTest extends TestCase
     {
         $order = $this->pesanan();
         $item = $order->items()->whereNotNull('variant_id')->firstOrFail();
-        Variant::factory()->create(['product_id' => $item->product_id, 'name' => 'Kanan', 'sku' => '33550-T9A-N']);
+        Variant::factory()->create(['product_id' => $item->product_id, 'name' => 'Kanan', 'sku' => 'JMY-KCR-N9']);
         $item->variant->delete();
         $admin = User::factory()->admin()->create();
 
         $this->actingAs($admin)
             ->get(route('admin.orders.label', $order))
             ->assertOk()
-            ->assertSeeInOrder(['Lampu Spion City', '33550-T9A-K', 'Kiri'])
+            ->assertSeeInOrder(['Jamu Beras Kencur Botol', 'JMY-KCR-K9', 'Kiri'])
             ->assertDontSee('Varian tidak diketahui')
-            ->assertDontSee('33550-INDUK');
+            ->assertDontSee('JMY-KCR-INDUK');
 
         Livewire::actingAs($admin)
             ->test('pages::admin.orders.show', ['order' => $order->fresh()])
@@ -122,7 +122,7 @@ class LabelPengirimanTest extends TestCase
 
         $this->get(route('orders.invoice', $order))
             ->assertOk()
-            ->assertSee('33550-T9A-K')
+            ->assertSee('JMY-KCR-K9')
             ->assertSee('Kiri');
     }
 
@@ -131,14 +131,14 @@ class LabelPengirimanTest extends TestCase
         $order = $this->pesanan();
         $item = $order->items()->whereNotNull('variant_id')->firstOrFail();
         $item->update(['sku' => null, 'variant_name' => null]);
-        Variant::factory()->create(['product_id' => $item->product_id, 'name' => 'Kanan', 'sku' => '33550-T9A-N']);
+        Variant::factory()->create(['product_id' => $item->product_id, 'name' => 'Kanan', 'sku' => 'JMY-KCR-N9']);
         $item->variant->delete();
 
         $this->actingAs(User::factory()->admin()->create())
             ->get(route('admin.orders.label', $order))
             ->assertOk()
             ->assertSee('Varian tidak diketahui')
-            ->assertDontSee('33550-INDUK');
+            ->assertDontSee('JMY-KCR-INDUK');
     }
 
     public function test_label_memuat_catatan_custom_pembeli(): void

@@ -131,7 +131,7 @@ new #[Title('Testimoni')] #[Layout('layouts::admin')] class extends Component
         <form wire:submit="save" class="space-y-5 p-5 sm:p-6">
             <div class="grid items-start gap-x-5 gap-y-4 sm:grid-cols-2">
                 <flux:input wire:model="name" label="Nama" placeholder="Budi Santoso" />
-                <flux:input wire:model="role" label="Peran" placeholder="Pemilik Bengkel" />
+                <flux:input wire:model="role" label="Peran" placeholder="Pelanggan Setia" />
                 <flux:select wire:model="rating" label="Rating">
                     <flux:select.option value="1">1</flux:select.option>
                     <flux:select.option value="2">2</flux:select.option>
@@ -147,7 +147,7 @@ new #[Title('Testimoni')] #[Layout('layouts::admin')] class extends Component
                 @if ($editingId)
                     <flux:button type="button" wire:click="resetForm" variant="ghost" class="cursor-pointer">Batal</flux:button>
                 @endif
-                <flux:button type="submit" variant="primary" class="cursor-pointer">Simpan</flux:button>
+                <flux:button type="submit" variant="primary" class="cursor-pointer" :loading="false"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Memproses...</span></flux:button>
             </div>
         </form>
     </div>

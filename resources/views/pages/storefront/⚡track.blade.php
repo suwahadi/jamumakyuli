@@ -72,7 +72,7 @@ new #[Layout('layouts::storefront')] class extends Component
 
         <x-btn type="submit" variant="primary" class="mt-5 w-full" wire:loading.attr="disabled" wire:target="track">
             <span wire:loading.remove wire:target="track">{{ __('Lacak Pesanan') }}</span>
-            <span wire:loading wire:target="track">{{ __('Mencari…') }}</span>
+            <span wire:loading wire:target="track">{{ __('Memproses...') }}</span>
         </x-btn>
     </form>
 

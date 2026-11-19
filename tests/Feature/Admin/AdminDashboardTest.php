@@ -56,15 +56,15 @@ class AdminDashboardTest extends TestCase
 
     public function test_stok_menipis_hanya_menampilkan_produk_di_bawah_ambang(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
-        Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Part Nyaris Habis', 'stock' => 2, 'is_active' => true]);
-        Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Part Melimpah', 'stock' => 999, 'is_active' => true]);
+        Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Jamu Nyaris Habis', 'stock' => 2, 'is_active' => true]);
+        Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Jamu Melimpah', 'stock' => 999, 'is_active' => true]);
 
         $this->actingAs($this->admin())->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Part Nyaris Habis')
-            ->assertDontSee('Part Melimpah');
+            ->assertSee('Jamu Nyaris Habis')
+            ->assertDontSee('Jamu Melimpah');
     }
 
     // Kolom stock pada produk bervarian adalah data mati — totalStock() menjumlah varian
@@ -72,11 +72,11 @@ class AdminDashboardTest extends TestCase
     // produk bervarian sebagai "0 tersisa".
     public function test_produk_bervarian_yang_stok_variannya_aman_tidak_masuk_stok_menipis(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         $produk = Product::factory()->create([
             'category_id' => $kategori->id,
-            'name' => 'Part Bervarian Melimpah',
+            'name' => 'Jamu Bervarian Melimpah',
             'stock' => 0,
             'is_active' => true,
         ]);
@@ -85,16 +85,16 @@ class AdminDashboardTest extends TestCase
 
         $this->actingAs($this->admin())->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertDontSee('Part Bervarian Melimpah');
+            ->assertDontSee('Jamu Bervarian Melimpah');
     }
 
     public function test_stok_menipis_membaca_stok_varian_terendah_bukan_kolom_induk(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
 
         $produk = Product::factory()->create([
             'category_id' => $kategori->id,
-            'name' => 'Part Bervarian Kritis',
+            'name' => 'Jamu Bervarian Kritis',
             'stock' => 987654,
             'is_active' => true,
             'sku' => 'JMY-KRITIS',
@@ -104,14 +104,14 @@ class AdminDashboardTest extends TestCase
 
         $this->actingAs($this->admin())->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Part Bervarian Kritis')
+            ->assertSee('Jamu Bervarian Kritis')
             ->assertDontSee('987654');
     }
 
     public function test_produk_terlaris_dihitung_dari_pesanan_berbayar(): void
     {
-        $kategori = Category::query()->create(['name' => 'Rem', 'slug' => 'rem', 'is_active' => true]);
-        $laris = Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Kampas Paling Laku']);
+        $kategori = Category::query()->create(['name' => 'Rempah', 'slug' => 'rempah', 'is_active' => true]);
+        $laris = Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Jamu Paling Laku']);
         $tampilan = Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Angka Tampilan Saja']);
         $batal = Product::factory()->create(['category_id' => $kategori->id, 'name' => 'Hanya Dipesan Batal']);
 
@@ -125,7 +125,7 @@ class AdminDashboardTest extends TestCase
             ->instance()
             ->produkTerlaris;
 
-        $this->assertSame(['Kampas Paling Laku'], $terlaris->pluck('name')->all());
+        $this->assertSame(['Jamu Paling Laku'], $terlaris->pluck('name')->all());
         $this->assertSame(7, (int) $terlaris->first()->jumlah_terjual);
     }
 }
