@@ -110,6 +110,7 @@ class AdminProductFormTest extends TestCase
             ->test(self::COMPONENT, ['product' => $product])
             ->assertSet('name', 'Nama Lama')
             ->set('name', 'Nama Baru')
+            ->set('slug', '')
             ->set('stock', 3)
             ->call('save')
             ->assertHasNoErrors();

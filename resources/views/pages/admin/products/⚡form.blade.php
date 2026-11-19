@@ -8,6 +8,7 @@ use App\Models\Variant;
 use App\Support\AturanSku;
 use Flux\Flux;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
@@ -26,6 +27,8 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
     public ?int $category_id = null;
 
     public string $name = '';
+
+    public string $slug = '';
 
     public string $sku = '';
 
@@ -67,7 +70,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             $this->product = $product;
             $product->load(['variants', 'images']);
             $this->fill($product->only([
-                'category_id', 'name', 'sku', 'original_price', 'promo_price', 'description', 'weight', 'stock', 'is_active',
+                'category_id', 'name', 'slug', 'sku', 'original_price', 'promo_price', 'description', 'weight', 'stock', 'is_active',
             ]));
             $this->loadedStock = (int) $product->stock;
             $this->loadedVariantStock = $product->variants->pluck('stock', 'id')->map(fn ($stock): int => (int) $stock)->all();
@@ -197,6 +200,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
         }
 
         $productId = $this->product?->id;
+        $this->slug = Str::slug($this->slug);
         $adaVarian = $this->variants !== [];
         $wajibTanpaVarian = $adaVarian ? 'nullable' : 'required';
 
@@ -212,6 +216,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             $validated = $this->validate([
                 'category_id' => ['required', 'exists:categories,id'],
                 'name' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255', Rule::unique('products', 'slug')->ignore($productId)],
                 'sku' => [$wajibTanpaVarian, 'string', 'max:100'],
                 'original_price' => [$wajibTanpaVarian, 'integer', 'min:0'],
                 'promo_price' => ['nullable', 'integer', 'min:0', ...match (true) {
@@ -233,11 +238,15 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
                 'variants.*.stock' => ['required', 'integer', 'min:0'],
                 'variants.*.weight' => ['required', 'integer', 'min:1'],
                 'variants.*.image_key' => ['nullable', 'string'],
-            ], messages: $hargaVarianTermurah === null ? [] : [
-                'promo_price.lt' => 'Harga promo harus di bawah harga varian termurah ('.rupiah((int) $hargaVarianTermurah).') karena harga asli diambil dari harga itu.',
+            ], messages: [
+                'slug.unique' => 'Slug sudah dipakai produk lain.',
+                ...($hargaVarianTermurah === null ? [] : [
+                    'promo_price.lt' => 'Harga promo harus di bawah harga varian termurah ('.rupiah((int) $hargaVarianTermurah).') karena harga asli diambil dari harga itu.',
+                ]),
             ], attributes: [
                 'category_id' => 'kategori',
                 'name' => 'nama produk',
+                'slug' => 'slug',
                 'sku' => 'SKU produk',
                 'description' => 'deskripsi',
                 'stock' => 'stok',
@@ -279,9 +288,7 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             $data['weight'] ??= (int) $this->variants[0]['weight'];
         }
 
-        $data['slug'] = $this->product?->exists && $this->product->name === $this->name
-            ? $this->product->slug
-            : Product::uniqueSlug($this->name, $productId);
+        $data['slug'] = $this->slug !== '' ? $this->slug : Product::uniqueSlug($this->name, $productId);
 
         if ($this->product?->exists && (int) ($data['stock'] ?? 0) === $this->loadedStock) {
             unset($data['stock']);
@@ -477,7 +484,8 @@ new #[Title('Form Produk')] #[Layout('layouts::admin')] class extends Component
             </div>
             <div class="space-y-4 p-5 sm:p-6">
                 <div class="grid items-start gap-4 sm:grid-cols-2">
-                    <flux:input wire:model="name" label="Nama Produk" label:badge="*" aria-required="true" class="sm:col-span-2" />
+                    <flux:input wire:model="name" label="Nama Produk" label:badge="*" aria-required="true" />
+                    <flux:input wire:model="slug" label="Slug" placeholder="Otomatis dari nama produk" maxlength="255" />
                     <flux:field>
                         <flux:label :badge="$variants === [] ? '*' : null"><span>{{ $this->variantsHidden() ? 'SKU Produk' : 'SKU Produk (induk)' }}@if ($variants !== [])<span class="font-normal text-gray-500 dark:text-zinc-400"> - Boleh dikosongkan, diisi otomatis dari SKU varian pertama.</span>@endif</span></flux:label>
                         <flux:input wire:model="sku" :aria-required="$variants === [] ? 'true' : 'false'" />
