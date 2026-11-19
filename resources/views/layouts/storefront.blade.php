@@ -235,7 +235,7 @@
         @endunless
 
         <a href="{{ $waLink }}" target="_blank" rel="noopener" aria-label="{{ __('Chat WhatsApp') }} {{ $siteName }}"
-           class="wa-fab fixed bottom-6 right-4 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#1FAA55] text-white shadow-card-hover transition-transform hover:scale-105 lg:h-14 lg:w-14">
+           class="wa-fab fixed bottom-6 right-4 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-white shadow-card-hover transition-transform hover:scale-105 lg:h-14 lg:w-14">
             <svg class="h-6 w-6 fill-current lg:h-7 lg:w-7" aria-hidden="true"><use href="#i-wa"/></svg>
         </a>
 

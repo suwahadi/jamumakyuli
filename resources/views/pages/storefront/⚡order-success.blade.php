@@ -106,7 +106,7 @@ new #[Layout('layouts::storefront')] class extends Component
     @if ($order->status !== \App\Enums\OrderStatus::CANCELLED && ($waKonfirmasi = wa_href(\App\Support\WhatsAppMessage::orderConfirmation($order))))
         <div class="mt-6">
             <a href="{{ $waKonfirmasi }}" target="_blank" rel="noopener"
-               class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#15803D] px-6 font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95 sm:w-auto">
+               class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95 sm:w-auto">
                 <svg class="h-[18px] w-[18px] fill-current" aria-hidden="true"><use href="#i-wa"/></svg>
                 {{ __('Konfirmasi via WhatsApp') }}
             </a>
