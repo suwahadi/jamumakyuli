@@ -219,6 +219,11 @@ body.storefront textarea::placeholder {
 [data-flux-error] { color: var(--color-sale); }
 .dark [data-flux-error] { color: var(--color-red-400); }
 
+[data-flux-button].bg-red-500 { background-color: var(--color-sale); }
+[data-flux-button].bg-red-500:hover { background-color: var(--color-red-800); }
+.dark [data-flux-button].bg-red-500 { background-color: var(--color-red-600); }
+.dark [data-flux-button].bg-red-500:hover { background-color: var(--color-red-700); }
+
 .storefront input[type='search']:focus-visible {
     outline: none;
 }

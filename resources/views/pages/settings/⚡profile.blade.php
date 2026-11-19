@@ -15,17 +15,25 @@ new #[Title('Pengaturan Profil')] class extends Component {
     public string $name = '';
     public string $email = '';
 
+    public string $phone = '';
+
     public function mount(): void
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->phone = (string) Auth::user()->phone;
     }
 
     public function updateProfileInformation(): void
     {
         $user = Auth::user();
 
-        $validated = $this->validate($this->profileRules($user->id));
+        $validated = $this->validate($this->profileRules($user->id), [], [
+            'name' => 'nama',
+            'email' => 'email',
+            'phone' => 'nomor telepon',
+        ]);
+        $validated['phone'] = filled($validated['phone'] ?? null) ? trim($validated['phone']) : null;
 
         $user->fill($validated);
 
@@ -67,49 +75,37 @@ new #[Title('Pengaturan Profil')] class extends Component {
     }
 }; ?>
 
-<section class="w-full">
-    @include('partials.settings-heading')
-
-    <flux:heading class="sr-only">Pengaturan profil</flux:heading>
-
-    <x-pages::settings.layout heading="Profil" subheading="Perbarui nama dan alamat email Anda">
-        <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" label="Nama" type="text" required autofocus autocomplete="name" />
-
-            <div>
-                <flux:input wire:model="email" label="Email" type="email" required autocomplete="email" />
+<div>
+    <x-pages::settings.layout>
+        <x-settings.card title="Informasi Profil" description="Perbarui nama, email, dan nomor telepon Anda">
+            <form wire:submit="updateProfileInformation" class="space-y-5">
+                <div class="grid gap-5 md:grid-cols-3">
+                    <flux:input wire:model="name" label="Nama" type="text" required autofocus autocomplete="name" />
+                    <flux:input wire:model="email" label="Email" type="email" required autocomplete="email" />
+                    <flux:input wire:model="phone" label="Telepon" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx" />
+                </div>
 
                 @if ($this->hasUnverifiedEmail)
-                    <div>
-                        <flux:text class="mt-4">
-                            Alamat email Anda belum terverifikasi.
-
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
-                                Klik di sini untuk mengirim ulang email verifikasi.
-                            </flux:link>
-                        </flux:text>
+                    <div class="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:bg-amber-500/10 dark:text-amber-200">
+                        Alamat email Anda belum terverifikasi.
+                        <button type="button" wire:click.prevent="resendVerificationNotification" class="cursor-pointer font-semibold underline underline-offset-2">Kirim ulang email verifikasi</button>
 
                         @if (session('status') === 'verification-link-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-brand-green">
-                                Tautan verifikasi baru telah dikirim ke alamat email Anda.
-                            </flux:text>
+                            <p class="mt-2 font-medium text-brand-green dark:text-green-400">Tautan verifikasi baru telah dikirim ke alamat email Anda.</p>
                         @endif
                     </div>
                 @endif
-            </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-profile-button" :loading="false">
+                <div class="flex justify-end border-t border-zinc-100 pt-5 dark:border-zinc-800">
+                    <flux:button variant="primary" type="submit" class="w-full sm:w-auto" data-test="update-profile-button" :loading="false">
                         <span wire:loading.remove wire:target="updateProfileInformation">Simpan</span><span wire:loading wire:target="updateProfileInformation">Memproses...</span>
                     </flux:button>
                 </div>
-
-            </div>
-        </form>
+            </form>
+        </x-settings.card>
 
         @if ($this->showDeleteUser)
             <livewire:pages::settings.delete-user-form />
         @endif
     </x-pages::settings.layout>
-</section>
+</div>

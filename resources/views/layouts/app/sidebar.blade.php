@@ -52,7 +52,7 @@
             </x-shell.sidebar>
 
             <div class="flex min-w-0 flex-1 flex-col">
-                <x-shell.topbar :title="\App\Support\DashboardMenu::currentLabel()" :home="route('dashboard')" role="Pelanggan" />
+                <x-shell.topbar :title="\App\Support\DashboardMenu::currentLabel()" :home="route('dashboard')" :role="auth()->user()?->role?->label() ?? 'Pelanggan'" />
 
                 <main class="mx-auto w-full max-w-[1320px] flex-1 p-4 pb-10 sm:p-6 sm:pb-12">
                     {{ $slot }}

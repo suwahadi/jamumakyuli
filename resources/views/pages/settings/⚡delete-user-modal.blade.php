@@ -28,18 +28,18 @@ new class extends Component {
             <flux:heading size="lg">Yakin ingin menghapus akun Anda?</flux:heading>
 
             <flux:subheading>
-                Setelah akun dihapus, seluruh data dan isinya hilang permanen. Masukkan kata sandi Anda untuk memastikan Anda benar-benar ingin menghapus akun ini.
+                Akun tidak bisa dipulihkan setelah dihapus. Masukkan kata sandi Anda untuk melanjutkan.
             </flux:subheading>
         </div>
 
         <flux:input wire:model="password" label="Kata Sandi" type="password" viewable />
 
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+        <div class="grid grid-cols-2 gap-2">
             <flux:modal.close>
-                <flux:button variant="outline">Batal</flux:button>
+                <flux:button variant="outline" class="w-full">Batal</flux:button>
             </flux:modal.close>
 
-            <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button" :loading="false">
+            <flux:button variant="danger" type="submit" class="w-full" data-test="confirm-delete-user-button" :loading="false">
                 <span wire:loading.remove wire:target="deleteUser">Hapus akun</span><span wire:loading wire:target="deleteUser">Memproses...</span>
             </flux:button>
         </div>

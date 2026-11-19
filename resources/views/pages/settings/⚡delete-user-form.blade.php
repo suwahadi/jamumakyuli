@@ -4,17 +4,16 @@ use Livewire\Component;
 
 new class extends Component {}; ?>
 
-<section class="mt-10 space-y-6">
-    <div class="relative mb-5">
-        <flux:heading>Hapus akun</flux:heading>
-        <flux:subheading>Hapus akun Anda beserta seluruh datanya</flux:subheading>
+<x-settings.card title="Hapus Akun" description="Tutup akun ini secara permanen" danger>
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p class="max-w-md text-sm text-zinc-600 dark:text-zinc-300">Akun yang sudah dihapus tidak bisa dipulihkan. Daftar favorit ikut terhapus, dan riwayat pesanan tidak lagi bisa dibuka dari akun ini.</p>
+
+        <flux:modal.trigger name="confirm-user-deletion">
+            <flux:button variant="danger" class="w-full shrink-0 sm:w-auto" data-test="delete-user-button">
+                Hapus akun
+            </flux:button>
+        </flux:modal.trigger>
     </div>
 
-    <flux:modal.trigger name="confirm-user-deletion">
-        <flux:button variant="danger" data-test="delete-user-button">
-            Hapus akun
-        </flux:button>
-    </flux:modal.trigger>
-
     <livewire:pages::settings.delete-user-modal />
-</section>
+</x-settings.card>

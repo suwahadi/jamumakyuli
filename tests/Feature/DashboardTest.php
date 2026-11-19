@@ -73,14 +73,6 @@ class DashboardTest extends TestCase
             }
         }
 
-        // partial ini dirender oleh halaman pengaturan tapi tinggal di luar folder di atas,
-        // sehingga sempat lolos dan judul halamannya tetap berbahasa Inggris
-        $partial = resource_path('views/partials/settings-heading.blade.php');
-
-        if (str_contains((string) file_get_contents($partial), '__(')) {
-            $pelanggar[] = 'partials/settings-heading.blade.php';
-        }
-
         $this->assertSame([], $pelanggar);
     }
 }

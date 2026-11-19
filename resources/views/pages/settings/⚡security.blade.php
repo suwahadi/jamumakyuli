@@ -115,53 +115,50 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
     }
 }; ?>
 
-<section class="w-full">
-    @include('partials.settings-heading')
+<div>
+    <x-pages::settings.layout>
+        <x-settings.card title="Kata Sandi" description="Perbarui kata sandi secara berkala. Pakai yang panjang dan acak agar akun tetap aman.">
+            <form method="POST" wire:submit="updatePassword" class="space-y-5">
+                <flux:input
+                    wire:model="current_password"
+                    label="Kata sandi saat ini"
+                    type="password"
+                    required
+                    autocomplete="current-password"
+                    viewable
+                />
+                <div class="grid gap-5 sm:grid-cols-2">
+                    <flux:input
+                        wire:model="password"
+                        label="Kata sandi baru"
+                        type="password"
+                        required
+                        autocomplete="new-password"
+                        passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
+                        viewable
+                    />
+                    <flux:input
+                        wire:model="password_confirmation"
+                        label="Konfirmasi kata sandi"
+                        type="password"
+                        required
+                        autocomplete="new-password"
+                        passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
+                        viewable
+                    />
+                </div>
 
-    <flux:heading class="sr-only">Pengaturan keamanan</flux:heading>
-
-    <x-pages::settings.layout heading="Perbarui kata sandi" subheading="Pastikan akun Anda memakai kata sandi yang panjang dan acak agar tetap aman">
-        <form method="POST" wire:submit="updatePassword" class="mt-6 space-y-6">
-            <flux:input
-                wire:model="current_password"
-                label="Kata sandi saat ini"
-                type="password"
-                required
-                autocomplete="current-password"
-                viewable
-            />
-            <flux:input
-                wire:model="password"
-                label="Kata sandi baru"
-                type="password"
-                required
-                autocomplete="new-password"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
-            <flux:input
-                wire:model="password_confirmation"
-                label="Konfirmasi kata sandi"
-                type="password"
-                required
-                autocomplete="new-password"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
-
-            <div class="flex items-center gap-4">
-                <flux:button variant="primary" type="submit" data-test="update-password-button" :loading="false">
-                    <span wire:loading.remove wire:target="updatePassword">Simpan</span><span wire:loading wire:target="updatePassword">Memproses...</span>
-                </flux:button>
-            </div>
-        </form>
+                <div class="flex justify-end border-t border-zinc-100 pt-5 dark:border-zinc-800">
+                    <flux:button variant="primary" type="submit" class="w-full sm:w-auto" data-test="update-password-button" :loading="false">
+                        <span wire:loading.remove wire:target="updatePassword">Simpan</span><span wire:loading wire:target="updatePassword">Memproses...</span>
+                    </flux:button>
+                </div>
+            </form>
+        </x-settings.card>
 
         @if ($canManagePasskeys)
-            <section class="mt-12">
-                <flux:heading>Passkey</flux:heading>
-                <flux:subheading>Kelola passkey Anda untuk masuk tanpa kata sandi</flux:subheading>
-
-                <div class="mt-6 flex flex-col w-full mx-auto space-y-6 text-sm" wire:cloak>
+            <x-settings.card title="Passkey" description="Kelola passkey Anda untuk masuk tanpa kata sandi">
+                <div class="flex w-full flex-col space-y-6 text-sm" wire:cloak>
                     <div class="border rounded-lg border-zinc-200 dark:border-zinc-700 overflow-hidden">
                         @forelse ($passkeys as $passkey)
                             <div class="flex items-center justify-between p-4 {{ ! $loop->last ? 'border-b border-zinc-200 dark:border-zinc-700' : '' }}">
@@ -192,7 +189,8 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
                                     icon="trash"
                                     icon:variant="outline"
                                     wire:click="confirmDelete({{ $passkey['id'] }})"
-                                    class="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50"
+                                    class="text-rose-700 hover:bg-rose-50 hover:text-rose-800 dark:text-rose-400 dark:hover:bg-rose-500/10"
+                                    aria-label="Hapus passkey {{ $passkey['name'] }}"
                                 />
                             </div>
                         @empty
@@ -208,7 +206,7 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
 
                     <x-passkey-registration />
                 </div>
-            </section>
+            </x-settings.card>
         @endif
     </x-pages::settings.layout>
 
@@ -226,15 +224,17 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
                 </flux:text>
             </div>
 
-            <div class="flex gap-3 justify-end">
+            <div class="grid grid-cols-2 gap-2">
                 <flux:button
                     variant="outline"
+                    class="w-full"
                     wire:click="closeDeleteModal"
                 >
                     Batal
                 </flux:button>
                 <flux:button
                     variant="danger"
+                    class="w-full"
                     wire:click="deletePasskey"
                 >
                     Hapus passkey
@@ -242,4 +242,4 @@ new #[Title('Pengaturan Keamanan')] class extends Component {
             </div>
         </div>
     </flux:modal>
-</section>
+</div>

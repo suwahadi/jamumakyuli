@@ -17,7 +17,7 @@ class ProfileUpdateTest extends TestCase
 
         $this->get(route('profile.edit'))
             ->assertOk()
-            ->assertSee('Perbarui nama dan alamat email Anda')
+            ->assertSee('Perbarui nama, email, dan nomor telepon Anda')
             ->assertSee('Hapus akun')
             ->assertDontSee('Update your name and email address')
             ->assertDontSee('Delete account')
