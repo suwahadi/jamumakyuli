@@ -1,0 +1,84 @@
+{
+    "categories": [
+        {
+            "slug": "paket-promil-pasutri",
+            "name": "Paket Promil Pasutri"
+        },
+        {
+            "slug": "jamu-ramuan-rempah",
+            "name": "Jamu Ramuan Rempah"
+        }
+    ],
+    "products": [
+        {
+            "sku": "JMY-PROMIL-IDEAL",
+            "name": "Jamu Paket Promil Ideal (BB Istri di Bawah 60 kg)",
+            "category": "paket-promil-pasutri",
+            "price": 250000,
+            "weight": 1000,
+            "stock": 20,
+            "image": "jamu-paket-promil-ideal.webp",
+            "description": "<p>Paket ramuan rempah kering untuk ikhtiar program hamil suami istri. Varian Ideal diracik untuk istri dengan berat badan di bawah 60 kg. Bila berat badan istri di atas 60 kg, pilih Paket Promil Gemoy.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran mengikuti petunjuk di label kemasan.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-PROMIL-GEMOY",
+            "name": "Jamu Paket Promil Gemoy (BB Istri di Atas 60 kg)",
+            "category": "paket-promil-pasutri",
+            "price": 250000,
+            "weight": 1000,
+            "stock": 20,
+            "image": "jamu-paket-promil-gemoy.webp",
+            "description": "<p>Paket ramuan rempah kering untuk ikhtiar program hamil suami istri. Varian Gemoy diracik untuk istri dengan berat badan di atas 60 kg. Bila berat badan istri di bawah 60 kg, pilih Paket Promil Ideal.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran mengikuti petunjuk di label kemasan.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-MANJAKANI",
+            "name": "Jamu Manjakani",
+            "category": "jamu-ramuan-rempah",
+            "price": 90000,
+            "weight": 500,
+            "stock": 20,
+            "image": "jamu-manjakani.webp",
+            "description": "<p>Ramuan manjakani dalam bentuk rempah kering, siap direbus di rumah.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran satu gelas belimbing atau gelas kopi.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-DIET",
+            "name": "Jamu Diet Herbal",
+            "category": "jamu-ramuan-rempah",
+            "price": 90000,
+            "weight": 500,
+            "stock": 20,
+            "image": "jamu-diet-herbal.webp",
+            "description": "<p>Ramuan Diet Herbal dalam bentuk rempah kering, siap direbus di rumah.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran satu gelas belimbing atau gelas kopi.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-PRIA",
+            "name": "Jamu Sehat Pria",
+            "category": "jamu-ramuan-rempah",
+            "price": 90000,
+            "weight": 500,
+            "stock": 20,
+            "image": "jamu-sehat-pria.webp",
+            "description": "<p>Ramuan rempah kering untuk pria, siap direbus di rumah.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran satu gelas belimbing atau gelas kopi.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-JSR",
+            "name": "Jamu JSR",
+            "category": "jamu-ramuan-rempah",
+            "price": 90000,
+            "weight": 500,
+            "stock": 20,
+            "image": "jamu-jsr.webp",
+            "description": "<p>Ramuan JSR racikan Jamu Mak Yuli dalam bentuk rempah kering, siap direbus di rumah.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran mengikuti petunjuk di label kemasan.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        },
+        {
+            "sku": "JMY-TEMULAWAK",
+            "name": "Jamu Temulawak",
+            "category": "jamu-ramuan-rempah",
+            "price": 70000,
+            "weight": 500,
+            "stock": 20,
+            "image": "jamu-temulawak.webp",
+            "description": "<p>Ramuan temulawak dalam bentuk rempah kering, siap direbus di rumah.</p><h3>Cara merebus</h3><ol><li>Cuci bersih semua bahan rempah.</li><li>Rebus satu bungkus ramuan dengan air sesuai petunjuk di label kemasan sampai mendidih.</li><li>Matikan kompor, biarkan dingin, lalu saring.</li><li>Simpan air rebusan dalam botol di kulkas.</li></ol><h3>Aturan minum</h3><p>Diminum dua kali sehari, pagi dan sore, sebelum makan. Takaran satu gelas belimbing atau gelas kopi.</p><p>Jamu adalah ramuan tradisional, bukan obat. Bila sedang menjalani pengobatan, tanyakan dulu ke dokter Anda.</p>"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Jamu Mak Yuli",
+    "short_name": "Mak Yuli",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "theme_color": "#2F7D32",
+    "background_color": "#FFFFFF",
+    "display": "standalone"
+}

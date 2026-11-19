@@ -1,0 +1,9 @@
+{
+  "attribution": { "commit": "", "pr": "" },
+  "env": {
+    "GIT_AUTHOR_NAME": "suwahadi",
+    "GIT_AUTHOR_EMAIL": "suwahadi@gmail.com",
+    "GIT_COMMITTER_NAME": "suwahadi",
+    "GIT_COMMITTER_EMAIL": "suwahadi@gmail.com"
+  }
+}
