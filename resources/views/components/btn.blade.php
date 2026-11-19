@@ -11,6 +11,7 @@
         'primary' => 'bg-brand-green text-white hover:bg-brand-green-dark',
         'outline' => 'border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white',
         'dark' => 'border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-white',
+        'soft' => 'bg-gray-200 text-ink hover:bg-gray-300 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-600',
         'ghost' => 'text-body-2 hover:bg-black/5 hover:text-ink dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100',
     ];
 

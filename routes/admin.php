@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\Admin\LabelPengirimanController;
 use App\Http\Controllers\Admin\TransferController;
+use App\Http\Middleware\BlockDisabledPages;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin', BlockDisabledPages::class])->prefix('admin')->name('admin.')->group(function () {
     Route::livewire('/', 'pages::admin.dashboard')->name('dashboard');
 
     Route::livewire('orders', 'pages::admin.orders.index')->name('orders.index');

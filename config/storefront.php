@@ -13,4 +13,9 @@ return [
         'slide_button' => true,
     ],
 
+    'disabled_pages' => [
+        'admin.reports.sales',
+        'admin.stock-opname.index',
+    ],
+
 ];

@@ -257,12 +257,14 @@ new #[Title('Dashboard Admin')] #[Layout('layouts::admin')] class extends Compon
                                 <p class="truncate text-sm font-semibold leading-tight text-brand-dark dark:text-zinc-100">{{ $produk->name }}</p>
                                 <p class="font-mono text-[11px] text-gray-500 dark:text-zinc-400">{{ $produk->sku }}</p>
                             </div>
-                            <span class="shrink-0 font-display text-sm font-bold {{ $sisa <= 2 ? 'text-brand-green' : 'text-brand-turmeric-ink' }}">{{ $sisa }} <span class="text-[10px] font-medium text-gray-500 dark:text-zinc-400">tersisa</span></span>
+                            <span class="shrink-0 font-display text-sm font-bold {{ $sisa <= 2 ? 'text-sale' : 'text-brand-turmeric-ink' }}">{{ $sisa }} <span class="text-[10px] font-medium text-gray-500 dark:text-zinc-400">tersisa</span></span>
                         </li>
                     @endforeach
                 </ul>
             @endif
+            @unless (\App\Support\AdminMenu::isDisabled('admin.stock-opname.index'))
             <a href="{{ route('admin.stock-opname.index') }}" wire:navigate class="mt-5 grid h-10 w-full place-items-center rounded-md border-2 border-brand-green font-display text-sm font-bold text-brand-green transition hover:bg-brand-green hover:text-white">Kelola Stok</a>
+            @endunless
         </div>
     </section>
 </div>

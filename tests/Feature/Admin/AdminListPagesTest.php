@@ -293,6 +293,7 @@ class AdminListPagesTest extends TestCase
 
     public function test_stok_opname_dipaginasi(): void
     {
+        config(['storefront.disabled_pages' => []]);
         $admin = $this->admin();
         $produk = Product::factory()->create();
 

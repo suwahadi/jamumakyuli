@@ -30,12 +30,6 @@ new #[Layout('layouts::storefront')] class extends Component
     }
 
     #[Computed]
-    public function categories()
-    {
-        return Category::query()->where('is_active', true)->withCount('products')->orderBy('id')->get();
-    }
-
-    #[Computed]
     public function promilProducts()
     {
         return $this->productsInCategory(Category::PROMIL_SLUG);
@@ -72,7 +66,6 @@ new #[Layout('layouts::storefront')] class extends Component
 
     $catalogUrl = route('products.index');
     $slides = $this->slides;
-    $gridCategories = $this->categories;
 @endphp
 
 <div>
@@ -159,42 +152,10 @@ new #[Layout('layouts::storefront')] class extends Component
 
     <x-trust-bar class="mt-8 md:mt-10" />
 
-    <section id="kategori" aria-label="{{ __('Kategori Produk') }}" class="container-x scroll-mt-24 py-12 md:py-14">
-        @php
-            $kolomKategori = match (min($gridCategories->count(), 4)) {
-                1 => 'mx-auto max-w-sm grid-cols-1',
-                2 => 'mx-auto max-w-3xl grid-cols-2',
-                3 => 'grid-cols-2 lg:grid-cols-3',
-                default => 'grid-cols-2 lg:grid-cols-4',
-            };
-        @endphp
-        <ul class="grid gap-x-4 gap-y-8 md:gap-y-10 {{ $kolomKategori }}">
-            @foreach ($gridCategories as $category)
-                <li>
-                    <a href="{{ route('products.index', ['category' => $category->slug]) }}" wire:navigate
-                       class="group flex flex-col items-center text-center">
-                        <h3 class="mb-2.5 font-display text-sm font-medium text-brand-dark dark:text-zinc-100 md:text-base">{{ $category->name }}</h3>
-                        <div class="flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl">
-                            @if ($category->thumbnailUrl())
-                                <img src="{{ $category->thumbnailUrl() }}" alt="{{ $category->name }}"
-                                     class="max-h-[75%] max-w-[75%] object-contain" loading="lazy">
-                            @else
-                                <div class="ph grid h-full w-full place-items-center rounded-xl" role="img" aria-label="{{ __('Ilustrasi') }} {{ $category->name }}">
-                                    <div class="ph-cap"><svg class="h-6 w-6" aria-hidden="true"><use href="#i-image"/></svg></div>
-                                </div>
-                            @endif
-                        </div>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </section>
-
     <div id="produk">
         @if ($this->promilProducts->isNotEmpty())
-            <div class="mt-12 bg-brand-pink-soft pb-10 dark:bg-zinc-900 md:mt-20 md:pb-14">
+            <div class="mt-8 bg-brand-pink-soft pb-10 dark:bg-zinc-900 md:mt-10 md:pb-14">
                 <x-product-rail id="sorotan-promil" :heading="__('Paket Promil Pasutri')" :products="$this->promilProducts" :href="$catalogUrl" pad="pt-10 md:pt-14" />
-                <p class="container-x mt-6 max-w-2xl text-[15px] text-body-2 dark:text-zinc-300">{{ __('Pilih Paket Promil Ideal bila berat badan istri di bawah 60 kg, dan Paket Promil Gemoy bila di atas 60 kg.') }}</p>
             </div>
         @endif
 

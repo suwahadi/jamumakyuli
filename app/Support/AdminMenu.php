@@ -6,9 +6,14 @@ namespace App\Support;
 
 class AdminMenu
 {
+    public static function isDisabled(string $routeName): bool
+    {
+        return in_array($routeName, (array) config('storefront.disabled_pages', []), true);
+    }
+
     public static function items(): array
     {
-        $tersembunyi = (array) config('storefront.hidden.admin_menu', []);
+        $tersembunyi = [...(array) config('storefront.hidden.admin_menu', []), ...(array) config('storefront.disabled_pages', [])];
 
         if ($tersembunyi === []) {
             return self::semua();

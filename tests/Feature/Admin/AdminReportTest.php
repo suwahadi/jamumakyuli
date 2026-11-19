@@ -12,6 +12,15 @@ class AdminReportTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Halaman ini dinonaktifkan lewat storefront.disabled_pages; test tetap
+    // menjalankannya supaya aman saat dimunculkan kembali.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.disabled_pages' => []]);
+    }
+
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);

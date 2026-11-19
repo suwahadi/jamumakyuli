@@ -40,11 +40,15 @@ class AdminChromeTest extends TestCase
     {
         $response = $this->actingAs($this->admin())->get(route('admin.dashboard'))->assertOk();
 
-        foreach (['Dashboard', 'Kategori', 'List Produk', 'List Pesanan', 'Stok Opname',
+        foreach (['Dashboard', 'Kategori', 'List Produk', 'List Pesanan',
             'List Pengguna', 'Halaman', 'Slide Hero', 'Testimoni',
-            'Laporan Penjualan', 'Pengaturan Global'] as $label) {
+            'Pengaturan Global'] as $label) {
             $response->assertSee($label);
         }
+
+        // Stok Opname dan Laporan Penjualan dinonaktifkan lewat storefront.disabled_pages.
+        $response->assertDontSee('Stok Opname');
+        $response->assertDontSee('Laporan Penjualan');
     }
 
     public function test_sidebar_memakai_rel_hitam_dan_wordmark_panel_admin(): void

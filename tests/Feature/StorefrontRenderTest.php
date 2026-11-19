@@ -29,11 +29,11 @@ class StorefrontRenderTest extends TestCase
 
         // Section anchors + headings dari index.html — kalau salah satu hilang,
         // sebuah section ikut hilang saat markup disunting.
-        $response->assertSee('Kategori Produk');
         $response->assertSee('Paket Promil Pasutri');
         $response->assertSee('id="sorotan-promil"', false);
         $response->assertSee('Sekilas Tentang');
-        $response->assertSee('id="kategori"', false);
+        $response->assertDontSee('id="kategori"', false);
+        $response->assertDontSee('Pilih Paket Promil Ideal bila');
         $response->assertSee('id="produk"', false);
         $response->assertSee('id="sekilas-h"', false);
 

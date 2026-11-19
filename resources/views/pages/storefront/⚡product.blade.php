@@ -480,11 +480,11 @@ new #[Layout('layouts::storefront')] class extends Component
                 </div>
                 <p class="mt-3 text-[13px] font-semibold text-ink dark:text-zinc-100">{{ __('Produk berhasil dimasukkan ke keranjang.') }}</p>
 
-                <div class="mt-4 flex items-center justify-center gap-2">
-                    <x-btn variant="primary" :href="route('cart.index')" wire:navigate class="whitespace-nowrap">
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                    <x-btn variant="primary" :href="route('cart.index')" wire:navigate class="whitespace-nowrap px-3">
                         {{ __('Lihat Keranjang') }}
                     </x-btn>
-                    <x-btn variant="ghost" @click="open = false" class="whitespace-nowrap">
+                    <x-btn variant="soft" @click="open = false" class="whitespace-nowrap px-3">
                         {{ __('Lanjutkan Belanja') }}
                     </x-btn>
                 </div>
