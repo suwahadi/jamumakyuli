@@ -63,4 +63,14 @@ class KartuProdukHargaTest extends TestCase
             $this->kartu($p),
         );
     }
+
+    // Judul dua baris tidak boleh menempel ke tombol Lihat Detail: ruang judul pas
+    // dua baris (leading-snug 1,375 x 2 = 2,75em) dan tombol punya jarak minimum.
+    public function test_judul_dua_baris_punya_jarak_ke_tombol_detail(): void
+    {
+        $html = $this->kartu(Product::factory()->create(['name' => 'Jamu Paket Promil Ideal (BB Istri di Bawah 60 kg)', 'is_active' => true]));
+
+        $this->assertStringContainsString('line-clamp-2 min-h-[2.75em]', $html);
+        $this->assertStringContainsString('mt-auto flex items-center gap-2 pt-3', $html);
+    }
 }

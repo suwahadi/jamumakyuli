@@ -65,11 +65,11 @@
             @endif
         </div>
 
-        <h3 class="mt-2 line-clamp-2 min-h-[2.6em] text-sm font-medium leading-snug dark:text-zinc-100">
+        <h3 class="mt-2 line-clamp-2 min-h-[2.75em] text-sm font-medium leading-snug dark:text-zinc-100">
             <a href="{{ $url }}" wire:navigate class="transition hover:text-brand-green">{{ $product->name }}</a>
         </h3>
 
-        <div class="mt-auto flex items-center gap-2">
+        <div class="mt-auto flex items-center gap-2 pt-3">
             <a href="{{ $url }}" wire:navigate class="grid h-11 flex-1 place-items-center rounded-md bg-brand-green font-display text-xs font-bold tracking-wide text-white transition hover:bg-brand-green-dark">{{ __('Lihat Detail') }}</a>
             @if ($removable)
                 <button type="button" wire:click="toggleWishlist({{ $product->id }})" wire:loading.attr="disabled"
