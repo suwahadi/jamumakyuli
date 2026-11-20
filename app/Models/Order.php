@@ -62,16 +62,6 @@ class Order extends Model
         return 'uuid';
     }
 
-    private const HALAMAN_LACAK = [
-        'jne' => 'https://www.jne.co.id/tracking-package',
-        'jnt' => 'https://jet.co.id/track',
-    ];
-
-    public function trackingUrl(): ?string
-    {
-        return filled($this->tracking_number) ? (self::HALAMAN_LACAK[$this->shipping_courier] ?? null) : null;
-    }
-
     public function beratTotalGram(): int
     {
         return $this->total_weight

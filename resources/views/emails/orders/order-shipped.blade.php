@@ -14,10 +14,7 @@
     <x-email::callout tone="info" label="Kurir" :value="$order->shippingCourierName()" badge="DIKIRIM" />
 
     @if ($order->tracking_number)
-        <x-email::callout tone="info" label="No. Resi / Keterangan" :value="$order->tracking_number"
-                          :link="$order->trackingUrl()"
-                          :link-label="'Lacak di situs '.(\App\Services\ShippingService::COURIERS[$order->shipping_courier] ?? strtoupper((string) $order->shipping_courier))"
-                          :note="$order->trackingUrl() ? 'Salin nomor resi di atas, lalu tempel di halaman lacak kurir.' : null" />
+        <x-email::callout tone="info" label="No. Resi / Keterangan" :value="$order->tracking_number" />
     @endif
 
     <x-email::button :href="route('checkout.success', $order)">Lihat Detail Pesanan</x-email::button>

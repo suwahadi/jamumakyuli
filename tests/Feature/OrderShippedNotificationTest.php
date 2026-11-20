@@ -209,12 +209,27 @@ class OrderShippedNotificationTest extends TestCase
             ->assertDontSee('Total Pembayaran');
     }
 
-    public function test_kurir_tanpa_halaman_lacak_tidak_menampilkan_tautan(): void
+    // Permintaan pemilik 2026-11-20: email Pesanan Dikirim juga tanpa tautan "Lacak di situs"
+    // dan petunjuk tempel resi; nomor resi tetap dicantumkan.
+    public function test_email_pesanan_dikirim_tanpa_tautan_lacak_kurir(): void
+    {
+        $order = $this->paidOrder();
+        app(OrderService::class)->markAsShipped($order, 'Admin', 'JP1234567890');
+
+        $html = app(BrevoService::class)->buildOrderShippedPayload($order->fresh())['htmlContent'];
+
+        $this->assertStringContainsString('JP1234567890', $html);
+        $this->assertStringNotContainsString('Lacak di situs', $html);
+        $this->assertStringNotContainsString('tracking-package', $html);
+        $this->assertStringNotContainsString('tempel di halaman lacak kurir', $html);
+        $this->assertFalse(method_exists(Order::class, 'trackingUrl'));
+    }
+
+    public function test_keterangan_kirim_tanpa_resi_tetap_tampil_tanpa_tautan(): void
     {
         $order = $this->paidOrder();
         $order->update(['status' => OrderStatus::SHIPPED, 'tracking_number' => 'Diantar kurir toko', 'shipping_courier' => 'pos']);
 
-        $this->assertNull($order->fresh()->trackingUrl());
         $this->get(route('checkout.success', $order->fresh()))
             ->assertSee('Diantar kurir toko')
             ->assertDontSee('Lacak di situs');
