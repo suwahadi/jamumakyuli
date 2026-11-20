@@ -1,0 +1,1 @@
+<strong style="color:{{ $ink }};">{{ $slot }}</strong>

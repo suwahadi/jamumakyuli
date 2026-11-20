@@ -1,6 +1,3 @@
-@php
-    $siteName = setting('site_name', config('services.brevo.sender_name', 'Jamu Mak Yuli'));
-@endphp
 <!DOCTYPE html>
 <html lang="id" xmlns="http://www.w3.org/1999/xhtml">
 <head>

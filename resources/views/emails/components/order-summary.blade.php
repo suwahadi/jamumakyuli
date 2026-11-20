@@ -1,4 +1,5 @@
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid {{ $line }}; border-radius:8px; border-collapse:separate; overflow:hidden;">
+@props(['order'])
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px; border:1px solid {{ $line }}; border-radius:8px; border-collapse:separate; overflow:hidden;">
     <tr>
         <td style="background-color:{{ $creamDeep }}; padding:11px 16px; border-bottom:1px solid {{ $line }};">
             <span style="font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:{{ $muted }};">Rincian Pesanan</span>

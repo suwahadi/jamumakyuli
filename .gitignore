@@ -26,7 +26,7 @@ yarn-error.log
 /database/*.sqlite
 /storage/app/private/livewire-tmp
 /.superpowers
-/docs/superpowers
+/docs/
 /CONTEXT.md
 /_img-produk
 /.claude/settings.local.json

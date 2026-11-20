@@ -1,7 +1,8 @@
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid {{ $line }}; border-radius:6px;">
+@props(['order', 'heading' => 'Alamat Pengiriman'])
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px; border:1px solid {{ $line }}; border-radius:8px;">
     <tr>
         <td style="padding:14px 16px;">
-            <p style="margin:0 0 10px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:{{ $muted }};">{{ $heading ?? 'Alamat Pengiriman' }}</p>
+            <p style="margin:0 0 10px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:{{ $muted }};">{{ $heading }}</p>
 
             <p style="margin:0; font-size:14px; line-height:1.6; color:{{ $ink }};">
                 <span style="font-weight:600;">{{ $order->customer_name }}</span><br>

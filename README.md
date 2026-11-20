@@ -71,7 +71,25 @@ BREVO_API_KEY=
 BREVO_SENDER_NAME="Jamu Mak Yuli"
 BREVO_SENDER_EMAIL="no-reply@jamumakyuli.com"
 BREVO_ADMIN_EMAIL="jamumakyulionline@gmail.com"
+
+MAIL_MAILER=brevo
+MAIL_FROM_ADDRESS="no-reply@jamumakyuli.com"
 ```
+
+Email pesanan dan reset kata sandi sama-sama dikirim lewat API Brevo dengan `BREVO_API_KEY`. IP server harus didaftarkan di Brevo (Security > Authorised IPs), kalau tidak Brevo menolak dengan status 401.
+
+## Template email
+
+Semua template ada di `resources/views/emails`:
+
+| Lokasi | Isi |
+|---|---|
+| `layout.blade.php` | Kerangka: kepala hijau, judul, kaki |
+| `components/` | Bagian bersama: `button` (selalu dengan tautan cadangan), `callout` (kotak status), `text`, `strong`, `order-summary`, `shipping` |
+| `orders/` | Tujuh email pesanan, hanya berisi teks dan susunan komponen |
+| `auth/reset-password.blade.php` | Email atur ulang kata sandi |
+
+Warna diatur di `config/mail.php` (`palette` dan `tones`). Template di `orders/` dan `auth/` tidak boleh berisi `style=` atau `<table`; aturan ini dijaga oleh `tests/Feature/EmailTemplateStructureTest.php`.
 
 ## Test
 

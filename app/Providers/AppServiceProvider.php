@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -29,38 +30,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
+        Blade::anonymousComponentNamespace('emails.components', 'email');
+
         View::composer('emails.*', function ($view): void {
             $view->with([
-                'accent' => '#2F7D32',
-                'accentDark' => '#1F5A23',
-                'dark' => '#0F2A14',
-                'ink' => '#0b0b0c',
-                'muted' => '#6b7280',
-                'line' => '#e5e7eb',
-                'cream' => '#f9fafb',
-                'creamDeep' => '#f5f5f5',
-
-                'successBg' => '#ecfdf5',
-                'successBorder' => '#a7f3d0',
-                'success' => '#047857',
-                'successInk' => '#065f46',
-                'successInkSoft' => '#047857',
-
-                'warningBg' => '#fffbeb',
-                'warningBorder' => '#fde68a',
-                'warning' => '#f59e0b',
-                'warningInk' => '#92400e',
-
-                'dangerBg' => '#fef2f2',
-                'dangerBorder' => '#fecaca',
-                'danger' => '#dc2626',
-                'dangerInk' => '#991b1b',
-                'dangerInkSoft' => '#b91c1c',
-
-                'infoBg' => '#eff6ff',
-                'infoBorder' => '#bfdbfe',
-                'infoInk' => '#1e40af',
-                'infoInkSoft' => '#1d4ed8',
+                ...config('mail.palette'),
+                'tones' => config('mail.tones'),
+                'siteName' => setting('site_name', config('services.brevo.sender_name', 'Jamu Mak Yuli')),
             ]);
         });
 

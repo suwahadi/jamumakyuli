@@ -5,26 +5,16 @@
 @section('heading', 'Pesanan Baru Masuk')
 
 @section('content')
-    <p style="margin:0 0 16px; font-size:14px; line-height:1.7; color:{{ $muted }};">
-        Pesanan baru <strong style="color:{{ $ink }};">{{ $order->order_number }}</strong> telah dibuat dan
-        <strong style="color:{{ $ink }};">menunggu pembayaran</strong>. Siapkan ketersediaan stok untuk item berikut.
+    <x-email::text>
+        Pesanan baru <x-email::strong>{{ $order->order_number }}</x-email::strong> telah dibuat dan
+        <x-email::strong>menunggu pembayaran</x-email::strong>. Siapkan ketersediaan stok untuk item berikut.
         Pemrosesan pengiriman dilakukan setelah pembayaran terkonfirmasi lunas.
-    </p>
+    </x-email::text>
 
-    @include('emails.orders.partials.shipping', ['heading' => 'Pemesan & Tujuan Pengiriman'])
+    <x-email::callout tone="warning" label="Total Pesanan" :value="rupiah($order->grand_total)" badge="MENUNGGU PEMBAYARAN" />
 
-    <div style="height:16px;"></div>
+    <x-email::button :href="route('admin.orders.show', $order)" variant="admin">Buka di Panel Admin</x-email::button>
 
-    @include('emails.orders.partials.summary')
-
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0 0;">
-        <tr>
-            <td style="background-color:{{ $dark }}; border-radius:8px;">
-                <a href="{{ route('admin.orders.show', $order) }}" target="_blank"
-                   style="display:inline-block; padding:13px 30px; font-size:14px; font-weight:700; color:#ffffff; text-decoration:none;">
-                    Buka di Panel Admin
-                </a>
-            </td>
-        </tr>
-    </table>
+    <x-email::order-summary :order="$order" />
+    <x-email::shipping :order="$order" heading="Pemesan & Tujuan Pengiriman" />
 @endsection
