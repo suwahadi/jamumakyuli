@@ -8,6 +8,7 @@ use App\Enums\PaymentAttemptStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class PaymentAttempt extends Model
 {
@@ -83,6 +84,50 @@ class PaymentAttempt extends Model
         }
 
         return $bank !== null ? strtoupper((string) $bank) : null;
+    }
+
+    public function methodLabel(): ?string
+    {
+        $payload = $this->latest_notification_payload ?? [];
+        $issuer = $payload['issuer'] ?? null;
+
+        return match ($payload['payment_type'] ?? null) {
+            'qris' => filled($issuer) ? 'QRIS ('.self::walletName((string) $issuer).')' : 'QRIS',
+            'gopay', 'shopeepay' => self::walletName((string) $payload['payment_type']),
+            'bank_transfer' => trim('Virtual Account '.self::bankName($this->bankLabel())),
+            'echannel' => 'Mandiri Bill Payment',
+            'credit_card' => 'Kartu Kredit',
+            'cstore' => Str::headline((string) ($payload['store'] ?? 'Gerai Retail')),
+            null => self::REQUESTED_METHOD_LABELS[$this->payment_method] ?? null,
+            default => Str::headline((string) $payload['payment_type']),
+        };
+    }
+
+    private const REQUESTED_METHOD_LABELS = [
+        'bca_va' => 'Virtual Account BCA',
+        'bni_va' => 'Virtual Account BNI',
+        'bri_va' => 'Virtual Account BRI',
+        'permata_va' => 'Virtual Account Permata',
+        'gopay' => 'GoPay',
+        'qris' => 'QRIS',
+    ];
+
+    private const WALLET_NAMES = [
+        'gopay' => 'GoPay',
+        'shopeepay' => 'ShopeePay',
+        'dana' => 'DANA',
+        'ovo' => 'OVO',
+        'linkaja' => 'LinkAja',
+    ];
+
+    private static function walletName(string $code): string
+    {
+        return self::WALLET_NAMES[strtolower($code)] ?? Str::headline($code);
+    }
+
+    private static function bankName(?string $bank): string
+    {
+        return $bank === 'PERMATA' ? 'Permata' : (string) $bank;
     }
 
     public function billKey(): ?string

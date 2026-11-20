@@ -15,7 +15,7 @@ class OrderInvoiceController extends Controller
         abort_if($order->status === OrderStatus::CANCELLED, 404);
 
         return view('orders.invoice', [
-            'order' => $order->load('items.product', 'items.variant'),
+            'order' => $order->load('items.product', 'items.variant', 'paymentAttempts'),
         ]);
     }
 }

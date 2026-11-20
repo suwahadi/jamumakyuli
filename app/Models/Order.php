@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use App\Enums\PaymentAttemptStatus;
 use App\Services\ShippingService;
 use App\Support\ImageWebp;
 use Illuminate\Database\Eloquent\Builder;
@@ -125,6 +126,14 @@ class Order extends Model
     public function paymentAttempts(): HasMany
     {
         return $this->hasMany(PaymentAttempt::class);
+    }
+
+    public function paymentMethodLabel(): string
+    {
+        $attempts = $this->paymentAttempts->sortByDesc('id');
+        $attempt = $attempts->firstWhere('status', PaymentAttemptStatus::PAID) ?? $attempts->first();
+
+        return $attempt?->methodLabel() ?? ($attempt !== null ? 'Midtrans' : '-');
     }
 
     public function activities(): HasMany

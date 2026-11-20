@@ -31,7 +31,7 @@ class InvoicePesananTest extends TestCase
     private function pesanan(OrderStatus $status = OrderStatus::PENDING): Order
     {
         $product = Product::factory()->create([
-            'name' => 'Filter Bensin Uji Invoice', 'sku' => 'JMY-INV-001',
+            'name' => 'Jamu Kunyit Uji Invoice', 'sku' => 'JMY-INV-001',
             'is_active' => true, 'stock' => 10, 'original_price' => 100000, 'promo_price' => null,
         ]);
 
@@ -73,11 +73,11 @@ class InvoicePesananTest extends TestCase
             ->assertSee('Budi')
             ->assertSee('Jl. Melati 1')
             ->assertSee('JP1234567890')
-            ->assertSee('Filter Bensin Uji Invoice')
+            ->assertSee('Jamu Kunyit Uji Invoice')
             ->assertSee(rupiah(100000))
             ->assertSee(rupiah($order->grand_total))
             ->assertSee('Total dibayar')
-            ->assertSee('Transfer bank BCA')
+            ->assertDontSee('Transfer bank BCA')
             ->assertSee('Terima kasih sudah berbelanja di Jamu Mak Yuli')
             ->assertSee('087879865789')
             ->assertSeeInOrder(['Kembali ke pesanan', '>Unduh<', '>Cetak<'], false)

@@ -71,18 +71,6 @@ new #[Title('Pesanan')] #[Layout('layouts::admin')] class extends Component {
         return OrderStatus::cases();
     }
 
-    public function metodeBayar(Order $order): string
-    {
-        $attempt = $order->paymentAttempts->first();
-        $metode = $attempt?->payment_method ?? ($attempt?->latest_notification_payload['payment_type'] ?? null);
-
-        return match (true) {
-            filled($metode) => strtoupper(str_replace('_', ' ', $metode)),
-            $attempt !== null => 'Midtrans',
-            default => '-',
-        };
-    }
-
     public function statusPembayaran(OrderStatus $status): array
     {
         return match ($status) {
@@ -164,7 +152,7 @@ new #[Title('Pesanan')] #[Layout('layouts::admin')] class extends Component {
                                 <p class="mt-0.5 text-[11px] leading-tight text-gray-500 dark:text-zinc-400">{{ $order->customer_email }}</p>
                             </td>
                             <td class="whitespace-nowrap px-3 py-3.5 text-gray-600 dark:text-zinc-400">{{ tanggal_id($order->created_at) }}</td>
-                            <td class="whitespace-nowrap px-3 py-3.5"><span class="inline-flex rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-zinc-800 dark:text-zinc-300">{{ $this->metodeBayar($order) }}</span></td>
+                            <td class="whitespace-nowrap px-3 py-3.5"><span class="inline-flex rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-zinc-800 dark:text-zinc-300">{{ $order->paymentMethodLabel() }}</span></td>
                             <td class="whitespace-nowrap px-3 py-3.5 font-display font-bold text-brand-green">{{ rupiah($order->grand_total) }}</td>
                             <td class="px-3 py-3.5">
                                 @php [$labelBayar, $clsBayar, $dotBayar] = $this->statusPembayaran($order->status); @endphp

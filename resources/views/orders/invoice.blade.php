@@ -139,7 +139,7 @@
         <div class="mt-5 flex flex-col-reverse gap-6 sm:flex-row sm:justify-between sm:gap-8">
             <div>
                 <h2 class="mb-1.5 text-xs font-bold text-zinc-600">{{ __('Pembayaran') }}</h2>
-                <p>{{ __('Transfer bank BCA') }}</p>
+                <p>{{ $order->paymentMethodLabel() }}</p>
             </div>
             <table class="w-full border-collapse sm:w-auto sm:min-w-[300px]">
                 <tr>
