@@ -42,6 +42,7 @@ return [
         'merchant_id' => env('MIDTRANS_MERCHANT_ID'),
         'client_key' => env('MIDTRANS_CLIENT_KEY'),
         'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'signature_secret_key' => env('MIDTRANS_SIGNATURE_SECRET_KEY'),
         'sanitize' => env('MIDTRANS_SANITIZE', true),
         'three_ds' => env('MIDTRANS_3DS', true),
 

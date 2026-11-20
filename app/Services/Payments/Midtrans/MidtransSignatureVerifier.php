@@ -14,15 +14,22 @@ class MidtransSignatureVerifier
             }
         }
 
-        $serverKey = (string) config('services.midtrans.server_key');
+        $signedText = $payload['order_id'].$payload['status_code'].$payload['gross_amount'];
 
-        $expected = hash('sha512',
-            $payload['order_id'].
-            $payload['status_code'].
-            $payload['gross_amount'].
-            $serverKey
-        );
+        foreach ($this->acceptedKeys() as $key) {
+            if (hash_equals(hash('sha512', $signedText.$key), (string) $payload['signature_key'])) {
+                return true;
+            }
+        }
 
-        return hash_equals($expected, (string) $payload['signature_key']);
+        return false;
+    }
+
+    private function acceptedKeys(): array
+    {
+        return array_values(array_filter([
+            (string) config('services.midtrans.signature_secret_key'),
+            (string) config('services.midtrans.server_key'),
+        ], static fn (string $key): bool => $key !== ''));
     }
 }

@@ -62,6 +62,7 @@ MIDTRANS_IS_PRODUCTION=false
 MIDTRANS_MERCHANT_ID=
 MIDTRANS_CLIENT_KEY=
 MIDTRANS_SERVER_KEY=
+MIDTRANS_SIGNATURE_SECRET_KEY=
 
 RAJAONGKIR_API_KEY=
 RAJAONGKIR_BASE_URL=https://rajaongkir.komerce.id/api/v1
@@ -75,6 +76,8 @@ BREVO_ADMIN_EMAIL="jamumakyulionline@gmail.com"
 MAIL_MAILER=brevo
 MAIL_FROM_ADDRESS="no-reply@jamumakyuli.com"
 ```
+
+`MIDTRANS_SIGNATURE_SECRET_KEY` diambil dari Dashboard Midtrans > Settings > Access Keys. Sejak 28 Oktober 2026 Midtrans memakai kunci ini untuk menandatangani notifikasi pembayaran. Server Key tetap dipakai untuk memanggil API, dan tetap diterima sebagai cadangan saat memeriksa tanda tangan.
 
 Email pesanan dan reset kata sandi sama-sama dikirim lewat API Brevo dengan `BREVO_API_KEY`. IP server harus didaftarkan di Brevo (Security > Authorised IPs), kalau tidak Brevo menolak dengan status 401.
 
