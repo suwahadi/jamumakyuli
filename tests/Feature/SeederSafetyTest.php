@@ -166,6 +166,8 @@ class SeederSafetyTest extends TestCase
         $this->assertSame('Jamu Mak Yuli', setting('site_name'));
         $this->assertSame('087879865789', setting('site_whatsapp'));
         $this->assertSame('Senin sampai Sabtu, 08.00 sampai 17.00 WIB', setting('site_hours'));
+        // ID RajaOngkir (Komerce) Kel. Munggur, Kec. Mojogedang, Karanganyar; dicek ke API 2026-11-20.
+        $this->assertSame('62050', setting('origin_district_id'));
         $this->assertTrue(User::query()->where('email', 'admin@jamumakyuli.com')->exists());
         Storage::disk('public')->assertExists(ProductImage::query()->value('path'));
         Storage::disk('public')->assertExists(Slide::query()->value('image'));

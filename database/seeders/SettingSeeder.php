@@ -22,7 +22,7 @@ class SettingSeeder extends Seeder
             'site_address' => 'Dk. Pilangbangu, Ds. Munggur, Kec. Mojogedang, Kab. Karanganyar',
             'site_maps_url' => 'https://www.google.com/maps/search/?api=1&query=rumah+mak+yuli+jamu',
             'site_hours' => 'Senin sampai Sabtu, 08.00 sampai 17.00 WIB',
-            'origin_district_id' => '17641',
+            'origin_district_id' => '62050',
             'expiry_order' => '1440',
             'site_footer_about' => 'Ramuan rempah kering untuk ikhtiar program hamil, racikan rumahan sejak 2020.',
             'site_facebook' => '',
