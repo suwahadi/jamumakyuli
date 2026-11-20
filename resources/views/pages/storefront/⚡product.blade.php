@@ -386,7 +386,7 @@ new #[Layout('layouts::storefront')] class extends Component
                         </button>
                         @if ($waProduk)
                             <a href="{{ $waProduk }}" target="_blank" rel="noopener"
-                               class="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#25D366] font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95">
+                               class="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#0E7C6F] font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95">
                                 <svg class="h-[18px] w-[18px] fill-current" aria-hidden="true"><use href="#i-wa"/></svg>
                                 {{ __('Tanya via WhatsApp') }}
                             </a>
@@ -395,7 +395,7 @@ new #[Layout('layouts::storefront')] class extends Component
                 @elseif ($this->price <= 0 && $waProduk)
                     <div class="mt-5">
                         <a href="{{ $waProduk }}" target="_blank" rel="noopener"
-                           class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#25D366] font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95">
+                           class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#0E7C6F] font-display text-sm font-bold tracking-wide text-white transition hover:brightness-95">
                             <svg class="h-[18px] w-[18px] fill-current" aria-hidden="true"><use href="#i-wa"/></svg>
                             {{ __('Tanya via WhatsApp') }}
                         </a>
@@ -431,7 +431,7 @@ new #[Layout('layouts::storefront')] class extends Component
                 </a>
 
                 <a href="{{ $waShare }}" target="_blank" rel="noopener" aria-label="{{ __('Bagikan ke WhatsApp') }}" title="WhatsApp"
-                   class="grid size-9 place-items-center rounded-md bg-gray-100 text-gray-500 transition hover:bg-[#25D366] hover:text-white dark:bg-zinc-800 dark:text-zinc-400">
+                   class="grid size-9 place-items-center rounded-md bg-gray-100 text-gray-500 transition hover:bg-[#0E7C6F] hover:text-white dark:bg-zinc-800 dark:text-zinc-400">
                     <svg class="size-[18px] fill-current" aria-hidden="true"><use href="#i-wa"/></svg>
                 </a>
 
@@ -510,7 +510,7 @@ new #[Layout('layouts::storefront')] class extends Component
             </button>
             @if ($waProduk)
                 <a href="{{ $waProduk }}" target="_blank" rel="noopener"
-                   class="inline-flex h-11 items-center justify-center gap-1.5 rounded-md bg-[#25D366] font-display text-xs font-bold tracking-wide text-white transition hover:brightness-95">
+                   class="inline-flex h-11 items-center justify-center gap-1.5 rounded-md bg-[#0E7C6F] font-display text-xs font-bold tracking-wide text-white transition hover:brightness-95">
                     <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-wa"/></svg>
                     {{ __('WhatsApp') }}
                 </a>

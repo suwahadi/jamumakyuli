@@ -14,23 +14,22 @@ class WhatsAppButtonColorTest extends TestCase
 {
     use RefreshDatabase;
 
-    // Permintaan pemilik 2026-11-19: tombol WhatsApp memakai hijau khas WA (#25D366)
-    // dengan teks putih, termasuk tombol WA mengambang, supaya beda dari tombol keranjang.
-    public function test_product_page_whatsapp_buttons_use_whatsapp_green_with_white_text(): void
+    // Permintaan pemilik 2026-11-20: hijau WA digelapkan ke #0E7C6F supaya teks putih
+    // lolos kontras WCAG AA (5.08:1); #25D366 hanya 1.98:1. Berlaku juga untuk tombol mengambang.
+    public function test_product_page_whatsapp_buttons_use_readable_whatsapp_green(): void
     {
         SettingService::set('site_whatsapp', '087879865789');
         $product = Product::factory()->create(['is_active' => true, 'stock' => 5]);
 
         $this->get(route('products.show', $product))
             ->assertOk()
-            ->assertSee('bg-[#25D366]', false)
-            ->assertSee('bg-[#25D366] font-display text-sm font-bold tracking-wide text-white', false)
-            ->assertSee('wa-fab fixed bottom-6 right-4 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-white', false)
-            ->assertDontSee('#15803D', false)
-            ->assertDontSee('#1FAA55', false);
+            ->assertSee('bg-[#0E7C6F] font-display text-sm font-bold tracking-wide text-white', false)
+            ->assertSee('wa-fab fixed bottom-6 right-4 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#0E7C6F] text-white', false)
+            ->assertSee('hover:bg-[#0E7C6F] hover:text-white', false)
+            ->assertDontSee('#25D366', false);
     }
 
-    public function test_order_success_whatsapp_button_uses_whatsapp_green(): void
+    public function test_order_success_whatsapp_button_uses_readable_whatsapp_green(): void
     {
         SettingService::set('site_whatsapp', '087879865789');
         $order = Order::factory()->create();
@@ -38,7 +37,7 @@ class WhatsAppButtonColorTest extends TestCase
         $this->get(route('checkout.success', $order))
             ->assertOk()
             ->assertSee('Konfirmasi via WhatsApp')
-            ->assertSee('bg-[#25D366]', false)
-            ->assertDontSee('#15803D', false);
+            ->assertSee('bg-[#0E7C6F]', false)
+            ->assertDontSee('#25D366', false);
     }
 }
