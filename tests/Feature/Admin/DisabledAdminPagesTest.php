@@ -53,6 +53,18 @@ class DisabledAdminPagesTest extends TestCase
         $this->assertNotContains('admin.transfer.products', $this->menuRoutes());
     }
 
+    // Permintaan pemilik 2026-11-20: ekspor/impor pengguna juga ditutup di level URL,
+    // bukan hanya disembunyikan dari menu.
+    public function test_user_export_import_is_disabled_by_default(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->get('/admin/transfer/users')->assertNotFound();
+        $this->actingAs($admin)->get('/admin/transfer/users/export')->assertNotFound();
+
+        $this->assertNotContains('admin.transfer.users', $this->menuRoutes());
+    }
+
     public function test_dashboard_does_not_link_to_disabled_stock_opname(): void
     {
         $this->actingAs($this->admin())->get(route('admin.dashboard'))

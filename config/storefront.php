@@ -6,9 +6,7 @@ return [
 
     'hidden' => [
 
-        'admin_menu' => [
-            'admin.transfer.users',
-        ],
+        'admin_menu' => [],
 
         'slide_button' => true,
 
@@ -20,6 +18,8 @@ return [
         'admin.stock-opname.index',
         'admin.transfer.products',
         'admin.transfer.products.export',
+        'admin.transfer.users',
+        'admin.transfer.users.export',
     ],
 
 ];

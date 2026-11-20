@@ -90,7 +90,7 @@ class AdminMenuTest extends TestCase
     }
 
     // Permintaan pemilik 2026-11-19: ekspor/impor produk dinonaktifkan sementara
-    // lewat storefront.disabled_pages, ekspor/impor pengguna tetap tersembunyi.
+    // lewat storefront.disabled_pages; sejak 2026-11-20 ekspor/impor pengguna juga.
     public function test_konfigurasi_bawaan_menyembunyikan_seluruh_ekspor_impor(): void
     {
         $rute = $this->rute(AdminMenu::items());
