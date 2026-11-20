@@ -106,15 +106,6 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::app')] class extends Component
                         <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ $detail }}</p>
                     @endif
                     <x-resi-pengiriman :order="$order" class="mt-3" />
-                    @if ($buktiUrl = $order->buktiKirimUrl())
-                        <div x-data="productLightbox()" class="mt-3">
-                            <x-btn variant="dark" :href="$buktiUrl" target="_blank" rel="noopener" x-on:click.prevent="open(0, [$el.href])" class="!px-4">
-                                <flux:icon.photo class="size-4" />
-                                Lihat Bukti Kirim
-                            </x-btn>
-                            <x-product-lightbox label="Foto bukti kirim" />
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

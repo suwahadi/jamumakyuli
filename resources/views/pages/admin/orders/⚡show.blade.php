@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\OrderStatus;
 use App\Exceptions\BusinessRuleException;
 use App\Models\Order;
 use App\Services\OrderService;
@@ -8,25 +7,12 @@ use Flux\Flux;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Component
 {
-    use WithFileUploads;
-
-    private const ATURAN_FOTO = ['image', 'mimes:jpg,jpeg,png,webp', 'max:10240'];
-
-    private const PESAN_FOTO = [
-        'bukti_kirim.image' => 'Berkas harus berupa foto.',
-        'bukti_kirim.mimes' => 'Gunakan foto JPG, PNG, atau WebP.',
-        'bukti_kirim.max' => 'Ukuran foto maksimal 10 MB.',
-    ];
-
     public Order $order;
 
     public string $tracking_number = '';
-
-    public $bukti_kirim = null;
 
     public function mount(Order $order): void
     {
@@ -46,19 +32,12 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
     {
         $validated = $this->validate([
             'tracking_number' => ['required', 'string', 'max:100'],
-            'bukti_kirim' => ['nullable', ...self::ATURAN_FOTO],
         ], [
             'tracking_number.required' => 'Nomor resi atau keterangan kirim wajib diisi.',
-            ...self::PESAN_FOTO,
         ]);
 
         try {
             $service->markAsShipped($this->order, auth()->user()?->name, $validated['tracking_number']);
-
-            if ($this->bukti_kirim) {
-                $service->simpanBuktiKirim($this->order, $this->bukti_kirim);
-                $this->bukti_kirim = null;
-            }
 
             $this->order->refresh();
             Flux::toast(variant: 'success', text: 'Pesanan ditandai telah dikirim. Notifikasi pengiriman dikirim.');
@@ -67,20 +46,6 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
         }
 
         Flux::modal('confirm-shipped')->close();
-    }
-
-    public function updatedBuktiKirim(): void
-    {
-        if (! in_array($this->order->status, [OrderStatus::SHIPPED, OrderStatus::DELIVERED], true)) {
-            return;
-        }
-
-        $this->validate(['bukti_kirim' => ['required', ...self::ATURAN_FOTO]], self::PESAN_FOTO);
-
-        app(OrderService::class)->simpanBuktiKirim($this->order, $this->bukti_kirim);
-        $this->bukti_kirim = null;
-        $this->order->refresh();
-        Flux::toast(variant: 'success', text: 'Foto bukti kirim disimpan.');
     }
 
     public function saveTracking(OrderService $service): void
@@ -270,32 +235,6 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                             </dd>
                         </div>
                     @endif
-                    @if (in_array($order->status, [App\Enums\OrderStatus::SHIPPED, App\Enums\OrderStatus::DELIVERED], true))
-                        @php($buktiUrl = $order->buktiKirimUrl())
-                        <div x-data="productLightbox()">
-                            <dt class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400">Bukti Kirim</dt>
-                            <dd class="mt-1 flex items-center gap-3">
-                                @if ($buktiUrl)
-                                    <a href="{{ $buktiUrl }}" target="_blank" rel="noopener" x-on:click.prevent="open(0, [$el.href])" aria-label="Perbesar foto bukti kirim"
-                                       class="block size-16 shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50 dark:border-zinc-700 dark:bg-zinc-800">
-                                        <img src="{{ $buktiUrl }}" alt="Foto bukti kirim" class="size-full object-cover">
-                                    </a>
-                                @endif
-                                <div class="min-w-0">
-                                    <label class="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-md border border-gray-200 px-3 text-sm font-semibold text-brand-dark transition hover:bg-gray-50 focus-within:ring-2 focus-within:ring-zinc-900/15 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:focus-within:ring-white/20">
-                                        <input type="file" wire:model="bukti_kirim" accept="image/jpeg,image/png,image/webp" class="sr-only">
-                                        <flux:icon.photo class="size-4" />
-                                        {{ $buktiUrl ? 'Ganti foto' : 'Unggah foto' }}
-                                    </label>
-                                    <p wire:loading wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Mengunggah foto…</p>
-                                    @error('bukti_kirim')
-                                        <p class="mt-1 text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </dd>
-                            <x-product-lightbox label="Foto bukti kirim" />
-                        </div>
-                    @endif
                     @if ($order->shipping_destination_label)
                         <div><dt class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400">Wilayah</dt><dd class="mt-0.5 text-gray-800 dark:text-zinc-100">{{ $order->shipping_destination_label }}</dd></div>
                     @endif
@@ -367,14 +306,9 @@ new #[Title('Detail Pesanan')] #[Layout('layouts::admin')] class extends Compone
                         label="Nomor Resi / Keterangan Kirim"
                         placeholder="mis. JP1234567890 atau Diantar 12 Agu"
                         maxlength="100" />
-            <div>
-                <flux:input type="file" wire:model="bukti_kirim" accept="image/jpeg,image/png,image/webp"
-                            label="Foto bukti kirim (opsional)" />
-                <p wire:loading wire:target="bukti_kirim" class="mt-1 text-xs text-gray-500 dark:text-zinc-400">Mengunggah foto…</p>
-            </div>
             <div class="grid grid-cols-2 gap-2">
                 <flux:modal.close><flux:button variant="outline" class="w-full cursor-pointer">Tidak</flux:button></flux:modal.close>
-                <flux:button wire:click="markShipped" wire:loading.attr="disabled" wire:target="bukti_kirim,markShipped" variant="primary" class="w-full cursor-pointer">Ya, Tandai Dikirim</flux:button>
+                <flux:button wire:click="markShipped" wire:loading.attr="disabled" wire:target="markShipped" variant="primary" class="w-full cursor-pointer">Ya, Tandai Dikirim</flux:button>
             </div>
         </div>
     </flux:modal>

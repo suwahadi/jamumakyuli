@@ -11,8 +11,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Services\Payments\Midtrans\MidtransClient;
-use App\Support\ImageWebp;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -209,19 +207,6 @@ class OrderService
         ]);
 
         $this->activities->shipped($order, $actor);
-
-        return $order;
-    }
-
-    public function simpanBuktiKirim(Order $order, UploadedFile $foto): Order
-    {
-        if (! in_array($order->status, [OrderStatus::SHIPPED, OrderStatus::DELIVERED], true)) {
-            throw new BusinessRuleException('Bukti kirim hanya untuk pesanan yang sudah dikirim.');
-        }
-
-        $lama = $order->shipping_proof_path;
-        $order->update(['shipping_proof_path' => ImageWebp::store($foto, 'bukti-kirim', 2000, 80, 'local')]);
-        ImageWebp::delete($lama, 'local');
 
         return $order;
     }

@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentAttemptStatus;
 use App\Services\ShippingService;
-use App\Support\ImageWebp;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +36,6 @@ class Order extends Model
         'shipping_service_label',
         'shipping_etd',
         'tracking_number',
-        'shipping_proof_path',
         'shipping_cost',
         'total_weight',
         'subtotal',
@@ -59,13 +57,6 @@ class Order extends Model
         ];
     }
 
-    protected static function booted(): void
-    {
-        static::deleted(function (Order $order): void {
-            ImageWebp::delete($order->shipping_proof_path, 'local');
-        });
-    }
-
     public function getRouteKeyName(): string
     {
         return 'uuid';
@@ -79,13 +70,6 @@ class Order extends Model
     public function trackingUrl(): ?string
     {
         return filled($this->tracking_number) ? (self::HALAMAN_LACAK[$this->shipping_courier] ?? null) : null;
-    }
-
-    public function buktiKirimUrl(): ?string
-    {
-        return filled($this->shipping_proof_path)
-            ? route('orders.bukti-kirim', [$this, 'v' => pathinfo($this->shipping_proof_path, PATHINFO_FILENAME)])
-            : null;
     }
 
     public function beratTotalGram(): int

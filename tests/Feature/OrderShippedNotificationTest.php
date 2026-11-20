@@ -192,9 +192,9 @@ class OrderShippedNotificationTest extends TestCase
             ->assertSee('JP1234567890');
     }
 
-    // Pengiriman manual: pembeli melacak sendiri di situs kurir, jadi nomor
-    // resi harus bisa disalin dan halaman lacak kurirnya mudah dibuka.
-    public function test_halaman_pesanan_dikirim_menyediakan_salin_resi_dan_tautan_lacak_kurir(): void
+    // Permintaan pemilik 2026-11-20: halaman pesanan pembeli cukup menampilkan nomor resi
+    // yang bisa disalin, tanpa tautan "Lacak di situs" dan petunjuk tempel resi.
+    public function test_halaman_pesanan_dikirim_menyediakan_salin_resi_tanpa_tautan_lacak(): void
     {
         $order = $this->paidOrder();
         app(OrderService::class)->markAsShipped($order, 'Admin', 'JP1234567890');
@@ -202,8 +202,9 @@ class OrderShippedNotificationTest extends TestCase
         $this->get(route('checkout.success', $order->fresh()))
             ->assertOk()
             ->assertSee('Salin nomor resi')
-            ->assertSee('href="https://www.jne.co.id/tracking-package"', false)
-            ->assertSee('Lacak di situs JNE')
+            ->assertDontSee('href="https://www.jne.co.id/tracking-package"', false)
+            ->assertDontSee('Lacak di situs')
+            ->assertDontSee('tempel di halaman lacak kurir')
             ->assertSee('Pesanan Anda dalam perjalanan.')
             ->assertDontSee('Total Pembayaran');
     }
@@ -219,7 +220,7 @@ class OrderShippedNotificationTest extends TestCase
             ->assertDontSee('Lacak di situs');
     }
 
-    public function test_dashboard_pembeli_menampilkan_tautan_lacak_kurir(): void
+    public function test_dashboard_pembeli_menampilkan_salin_resi_tanpa_tautan_lacak(): void
     {
         $user = User::factory()->create();
         $order = $this->paidOrder();
@@ -228,7 +229,8 @@ class OrderShippedNotificationTest extends TestCase
         $this->actingAs($user)->get(route('dashboard.orders.show', $order->fresh()))
             ->assertOk()
             ->assertSee('Salin nomor resi')
-            ->assertSee('href="https://www.jne.co.id/tracking-package"', false);
+            ->assertDontSee('href="https://www.jne.co.id/tracking-package"', false)
+            ->assertDontSee('Lacak di situs');
     }
 
     public function test_halaman_sukses_tanpa_resi_tidak_menampilkan_barisnya(): void

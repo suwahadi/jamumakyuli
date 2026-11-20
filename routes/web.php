@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BuktiKirimController;
 use App\Http\Controllers\OrderInvoiceController;
 use App\Http\Controllers\Payment\MidtransNotificationController;
 use App\Http\Controllers\Payment\PaymentRedirectController;
@@ -21,7 +20,6 @@ Route::livewire('/kontak', 'pages::storefront.kontak')->name('kontak');
 Route::livewire('/categories', 'pages::storefront.categories')->name('categories');
 Route::livewire('/order/{order:uuid}', 'pages::storefront.order-success')->name('checkout.success');
 Route::get('/order/{order:uuid}/invoice', OrderInvoiceController::class)->name('orders.invoice');
-Route::get('/order/{order:uuid}/bukti-kirim', BuktiKirimController::class)->middleware('auth')->name('orders.bukti-kirim');
 
 Route::post('/payments/midtrans/notification', MidtransNotificationController::class)
     ->middleware('throttle:120,1')
